@@ -1,0 +1,550 @@
+## plain unattached (width 42)
+┌ ● dev-server  ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ◯ 
+╎   proce… /home/demo/code/api
+└── running · 20m ago · 1h old  ─ ─ ─ ─ ─ 
+[┌]{fg=DarkGray}[ ][●]{fg=Gray}[ ][]{fg=150}[dev-server]{fg=Black,bg=150,+BOLD}[]{fg=150}[ ][ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─]{fg=DarkGray}[ ][◯]{fg=#B4B4B4}[ ]
+[╎]{fg=DarkGray}[   ][proce…]{fg=DarkGray}[ ][/home/demo/code/api]{fg=#B4B4B4,+BOLD}
+[└──]{fg=DarkGray}[ ][running · 20m ago · 1h old]{fg=Gray}[ ][ ─ ─ ─ ─ ─]{fg=DarkGray}[ ]
+
+## plain in this window (width 42)
+┌ ● dev-server ────────────────────── → 
+│   proce… /home/demo/code/api     pane 2 
+└── running · 20m ago · 1h old ────────── 
+[┌]{fg=DarkGray}[ ][●]{fg=Gray}[ ][]{fg=150}[dev-server]{fg=Black,bg=150,+BOLD}[]{fg=150}[ ][──────────────────────]{fg=DarkGray}[ ][→]{fg=White}[ ]
+[│]{fg=DarkGray}[   ][proce…]{fg=DarkGray}[ ][/home/demo/code/api]{fg=White,+BOLD}[     ][pane 2]{fg=White}[ ]
+[└──]{fg=DarkGray}[ ][running · 20m ago · 1h old]{fg=Gray}[ ][──────────]{fg=DarkGray}[ ]
+
+## plain in another window (width 42)
+┌ ● dev-server ────────────────────── ↗ 
+│   proce… /home/demo/code/api   window 3 
+└── running · 20m ago · 1h old ────────── 
+[┌]{fg=DarkGray}[ ][●]{fg=Gray}[ ][]{fg=150}[dev-server]{fg=Black,bg=150,+BOLD}[]{fg=150}[ ][──────────────────────]{fg=DarkGray}[ ][↗]{fg=#B4B4B4}[ ]
+[│]{fg=DarkGray}[   ][proce…]{fg=DarkGray}[ ][/home/demo/code/api]{fg=#B4B4B4,+BOLD}[   ][window 3]{fg=#B4B4B4}[ ]
+[└──]{fg=DarkGray}[ ][running · 20m ago · 1h old]{fg=Gray}[ ][──────────]{fg=DarkGray}[ ]
+
+## plain in another session (width 42)
+┌ ● dev-server ────────────────────── ⧉ 
+│   proce… /home/demo/code/api 2 attached 
+└── running · 20m ago · 1h old ────────── 
+[┌]{fg=DarkGray}[ ][●]{fg=Gray}[ ][]{fg=150}[dev-server]{fg=Black,bg=150,+BOLD}[]{fg=150}[ ][──────────────────────]{fg=DarkGray}[ ][⧉]{fg=White}[ ]
+[│]{fg=DarkGray}[   ][proce…]{fg=DarkGray}[ ][/home/demo/code/api]{fg=White,+BOLD}[ ][2 attached]{fg=White}[ ]
+[└──]{fg=DarkGray}[ ][running · 20m ago · 1h old]{fg=Gray}[ ][──────────]{fg=DarkGray}[ ]
+
+## claude working, prompts (width 42)
+┌ ● loader ────────────────────────── → 
+│   claude /home/demo/code/… · 12p pane 2 
+└── working · 20m ago · 1h old ────────── 
+[┌]{fg=DarkGray}[ ][●]{fg=Cyan}[ ][]{fg=71}[loader]{fg=Black,bg=71,+BOLD}[]{fg=71}[ ][──────────────────────────]{fg=DarkGray}[ ][→]{fg=White}[ ]
+[│]{fg=DarkGray}[   ][claude]{fg=#D68255}[ ][/home/demo/code/…]{fg=White,+BOLD}[ · ]{fg=DarkGray}[12p]{fg=Cyan}[ ][pane 2]{fg=White}[ ]
+[└──]{fg=DarkGray}[ ][working · 20m ago · 1h old]{fg=Cyan}[ ][──────────]{fg=DarkGray}[ ]
+
+## codex waiting, auto-named with title (width 42)
+┌ ● Add rate limiting to the upload…  ◯ 
+╎   codex  /home/demo/code/api · 3p
+└── waiting · 20m ago · 1h old  ─ ─ ─ ─ ─ 
+[┌]{fg=DarkGray}[ ][●]{fg=Yellow}[ ][]{fg=80}[Add rate limiting to the upload…]{fg=Black,bg=80,+BOLD | ITALIC}[]{fg=80}[  ][◯]{fg=#B4B4B4}[ ]
+[╎]{fg=DarkGray}[   ][codex]{fg=#3EA682}[  ][/home/demo/code/api]{fg=#B4B4B4,+BOLD}[ · ]{fg=DarkGray}[3p]{fg=Cyan}
+[└──]{fg=DarkGray}[ ][waiting · 20m ago · 1h old]{fg=Yellow}[ ][ ─ ─ ─ ─ ─]{fg=DarkGray}[ ]
+
+## auto-named without title (width 42)
+┌ ● ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ◯ 
+╎   claude /home/demo/code/api
+└── done · 20m ago · 1h old ─ ─ ─ ─ ─ ─ ─ 
+[┌]{fg=DarkGray}[ ][●]{fg=Green}[ ][─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─]{fg=DarkGray}[ ][◯]{fg=#B4B4B4}[ ]
+[╎]{fg=DarkGray}[   ][claude]{fg=#D68255}[ ][/home/demo/code/api]{fg=#B4B4B4,+BOLD}
+[└──]{fg=DarkGray}[ ][done · 20m ago · 1h old]{fg=Green}[ ][─ ─ ─ ─ ─ ─ ─]{fg=DarkGray}[ ]
+
+## moved since launch (width 42)
+┌ ● web ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ◯ 
+╎   proce… /home/demo/code/api
+╎   running · 20m ago · 1h old
+└─ Launched in: /home/demo/code/web ─ ─ ─ 
+[┌]{fg=DarkGray}[ ][●]{fg=Gray}[ ][]{fg=174}[web]{fg=Black,bg=174,+BOLD}[]{fg=174}[ ][─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─]{fg=DarkGray}[ ][◯]{fg=#B4B4B4}[ ]
+[╎]{fg=DarkGray}[   ][proce…]{fg=DarkGray}[ ][/home/demo/code/api]{fg=#B4B4B4,+BOLD}
+[╎]{fg=DarkGray}[   ][running · 20m ago · 1h old]{fg=Gray}
+[└─]{fg=DarkGray}[ ][Launched in: /home/demo/code/web]{fg=DarkGray}[ ][─ ─ ─]{fg=DarkGray}[ ]
+
+## moved since launch, drawer open (width 42)
+┌ ● web ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ◯ 
+╎   proce… /home/demo/code/api
+╎   running · 20m ago · 1h old
+╎  Launched in: /home/demo/code/web
+[┌]{fg=DarkGray}[ ][●]{fg=Gray}[ ][]{fg=174}[web]{fg=Black,bg=174,+BOLD}[]{fg=174}[ ][─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─]{fg=DarkGray}[ ][◯]{fg=#B4B4B4}[ ]
+[╎]{fg=DarkGray}[   ][proce…]{fg=DarkGray}[ ][/home/demo/code/api]{fg=#B4B4B4,+BOLD}
+[╎]{fg=DarkGray}[   ][running · 20m ago · 1h old]{fg=Gray}
+[╎]{fg=DarkGray}[  ][Launched in: /home/demo/code/web]{fg=DarkGray}
+
+## drawer open in this window (width 42)
+┌ ● loader ────────────────────────── → 
+│   claude /home/demo/code/api     pane 2 
+│   working · 20m ago · 1h old
+[┌]{fg=DarkGray}[ ][●]{fg=Cyan}[ ][]{fg=71}[loader]{fg=Black,bg=71,+BOLD}[]{fg=71}[ ][──────────────────────────]{fg=DarkGray}[ ][→]{fg=White}[ ]
+[│]{fg=DarkGray}[   ][claude]{fg=#D68255}[ ][/home/demo/code/api]{fg=White,+BOLD}[     ][pane 2]{fg=White}[ ]
+[│]{fg=DarkGray}[   ][working · 20m ago · 1h old]{fg=Cyan}
+
+## selected and focused (width 42)
+┌ ● loader ────────────────────────── → 
+│   claude /home/demo/code/api     pane 2 
+└── working · 20m ago · 1h old ────────── 
+[┌]{fg=208,bg=#3E3E3E}[ ][●]{fg=Cyan,bg=#3E3E3E}[ ][]{fg=71}[loader]{fg=Black,bg=71,+BOLD}[]{fg=71}[ ][──────────────────────────]{fg=208,bg=#3E3E3E}[ ][→]{fg=208,bg=#3E3E3E}[ ]
+[│]{fg=208,bg=#3E3E3E}[   ][claude]{fg=#D68255,bg=#3E3E3E}[ ][/home/demo/code/api]{fg=208,bg=#3E3E3E,+BOLD}[     ][pane 2]{fg=208,bg=#3E3E3E}[ ]
+[└──]{fg=208,bg=#3E3E3E}[ ][working · 20m ago · 1h old]{fg=Cyan,bg=#3E3E3E}[ ][──────────]{fg=208,bg=#3E3E3E}[ ]
+
+## pointer flash (width 42)
+┌ ● loader ────────────────────────── ↗ 
+│   proce… /home/demo/code/api   window 3 
+└── running · 20m ago · 1h old ────────── 
+[┌]{fg=Cyan}[ ][●]{fg=Gray}[ ][]{fg=71}[loader]{fg=Black,bg=71,+BOLD}[]{fg=71}[ ][──────────────────────────]{fg=Cyan}[ ][↗]{fg=Cyan}[ ]
+[│]{fg=Cyan}[   ][proce…]{fg=DarkGray}[ ][/home/demo/code/api]{fg=Cyan,+BOLD}[   ][window 3]{fg=Cyan}[ ]
+[└──]{fg=Cyan}[ ][running · 20m ago · 1h old]{fg=Gray}[ ][──────────]{fg=Cyan}[ ]
+
+## keyboard flash (width 42)
+┌ ● loader ────────────────────────── ↗ 
+│   proce… /home/demo/code/api   window 3 
+└── running · 20m ago · 1h old ────────── 
+[┌]{fg=DarkGray}[ ][●]{fg=Gray}[ ][]{fg=71}[loader]{fg=Black,bg=71,+BOLD}[]{fg=71}[ ][──────────────────────────]{fg=DarkGray}[ ][↗]{fg=Cyan}[ ]
+[│]{fg=DarkGray}[   ][proce…]{fg=DarkGray}[ ][/home/demo/code/api]{fg=#B4B4B4,+BOLD}[   ][window 3]{fg=Cyan}[ ]
+[└──]{fg=DarkGray}[ ][running · 20m ago · 1h old]{fg=Gray}[ ][──────────]{fg=DarkGray}[ ]
+
+## sidebar on the right (width 42)
+┌ ● loader ────────────────────────── ↖ 
+│   proce… /home/demo/code/api   window 3 
+└── running · 20m ago · 1h old ────────── 
+[┌]{fg=DarkGray}[ ][●]{fg=Gray}[ ][]{fg=71}[loader]{fg=Black,bg=71,+BOLD}[]{fg=71}[ ][──────────────────────────]{fg=DarkGray}[ ][↖]{fg=#B4B4B4}[ ]
+[│]{fg=DarkGray}[   ][proce…]{fg=DarkGray}[ ][/home/demo/code/api]{fg=#B4B4B4,+BOLD}[   ][window 3]{fg=#B4B4B4}[ ]
+[└──]{fg=DarkGray}[ ][running · 20m ago · 1h old]{fg=Gray}[ ][──────────]{fg=DarkGray}[ ]
+
+## second attachment row (width 42)
+┌ ● loader ────────────────────────── ↗ 
+│   proce… /home/demo/code/api   window 3 
+└── running · 20m ago · 1h old ────────── 
+[┌]{fg=DarkGray}[ ][●]{fg=Gray}[ ][]{fg=71}[loader]{fg=Black,bg=71,+BOLD}[]{fg=71}[ ][──────────────────────────]{fg=DarkGray}[ ][↗]{fg=White}[ ]
+[│]{fg=DarkGray}[   ][proce…]{fg=DarkGray}[ ][/home/demo/code/api]{fg=White,+BOLD}[   ][window 3]{fg=White}[ ]
+[└──]{fg=DarkGray}[ ][running · 20m ago · 1h old]{fg=Gray}[ ][──────────]{fg=DarkGray}[ ]
+
+## picker, unattached (width 80)
+┌ ● dev-server ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─
+╎   proce… /home/demo/code/api
+└── running · 20m ago · 1h old ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─
+[┌]{fg=DarkGray}[ ][●]{fg=Gray}[ ][]{fg=150}[dev-server]{fg=Black,bg=150,+BOLD}[]{fg=150}[ ][─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─]{fg=DarkGray}
+[╎]{fg=DarkGray}[   ][proce…]{fg=DarkGray}[ ][/home/demo/code/api]{fg=#B4B4B4,+BOLD}
+[└──]{fg=DarkGray}[ ][running · 20m ago · 1h old]{fg=Gray}[ ][─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─]{fg=DarkGray}
+
+## picker, attached twice (width 80)
+┌ ● loader ───────────────────────────────────────────────────────────────────
+│   claude /home/demo/code/api · 7p                                  2 attached 
+└── working · 20m ago · 1h old ─────────────────────────────────────────────────
+[┌]{fg=DarkGray}[ ][●]{fg=Cyan}[ ][]{fg=71}[loader]{fg=Black,bg=71,+BOLD}[]{fg=71}[ ][───────────────────────────────────────────────────────────────────]{fg=DarkGray}
+[│]{fg=DarkGray}[   ][claude]{fg=#D68255}[ ][/home/demo/code/api]{fg=White,+BOLD}[ · ]{fg=DarkGray}[7p]{fg=Cyan}[                                  ][2 attached]{fg=White}[ ]
+[└──]{fg=DarkGray}[ ][working · 20m ago · 1h old]{fg=Cyan}[ ][─────────────────────────────────────────────────]{fg=DarkGray}
+
+## very long name (width 30)
+┌ ● an-extremely-long-p…  ◯ 
+╎   proce… /home/demo/code/a…
+└── running · 20m ago ─ ─ ─ ─ 
+[┌]{fg=DarkGray}[ ][●]{fg=Gray}[ ][]{fg=79}[an-extremely-long-p…]{fg=Black,bg=79,+BOLD}[]{fg=79}[  ][◯]{fg=#B4B4B4}[ ]
+[╎]{fg=DarkGray}[   ][proce…]{fg=DarkGray}[ ][/home/demo/code/a…]{fg=#B4B4B4,+BOLD}
+[└──]{fg=DarkGray}[ ][running · 20m ago]{fg=Gray}[ ][─ ─ ─ ─]{fg=DarkGray}[ ]
+
+## narrow (width 24)
+┌ ● loader-refact…  ↗ 
+│   claude /home/demo/…
+│   working · 20m ago
+└─ Launched in: /hom… ─ 
+[┌]{fg=DarkGray}[ ][●]{fg=Cyan}[ ][]{fg=79}[loader-refact…]{fg=Black,bg=79,+BOLD}[]{fg=79}[  ][↗]{fg=#B4B4B4}[ ]
+[│]{fg=DarkGray}[   ][claude]{fg=#D68255}[ ][/home/demo/…]{fg=#B4B4B4,+BOLD}
+[│]{fg=DarkGray}[   ][working · 20m ago]{fg=Cyan}
+[└─]{fg=DarkGray}[ ][Launched in: /hom…]{fg=DarkGray}[ ][─]{fg=DarkGray}[ ]
+
+## narrow (width 16)
+┌ ● loader-r… 
+│   claude
+│   working
+└─ Launched … ─ 
+[┌]{fg=DarkGray}[ ][●]{fg=Cyan}[ ][]{fg=79}[loader-r…]{fg=Black,bg=79,+BOLD}[]{fg=79}[ ]
+[│]{fg=DarkGray}[   ][claude]{fg=#D68255}
+[│]{fg=DarkGray}[   ][working]{fg=Cyan}
+[└─]{fg=DarkGray}[ ][Launched …]{fg=DarkGray}[ ][─]{fg=DarkGray}[ ]
+
+## narrow (width 10)
+┌ ● lo… 
+│   clau…
+│   work…
+└─ Lau… ─ 
+[┌]{fg=DarkGray}[ ][●]{fg=Cyan}[ ][]{fg=79}[lo…]{fg=Black,bg=79,+BOLD}[]{fg=79}[ ]
+[│]{fg=DarkGray}[   ][clau…]{fg=#D68255}
+[│]{fg=DarkGray}[   ][work…]{fg=Cyan}
+[└─]{fg=DarkGray}[ ][Lau…]{fg=DarkGray}[ ][─]{fg=DarkGray}[ ]
+
+## family, pmux preset (width 42)
+┌ ● lead ──────────────────────────── → 
+│   claude /home/demo/code/api     pane 2 
+└─┬ working · 20m ago · 1h old ────────── 
+  │
+  ├ ● helper  ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ◯ 
+  ╎   codex  /home/demo/code/api
+  ├── done · 20m ago · 1h old ─ ─ ─ ─ ─ ─ 
+  │
+  ├ ● tests ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ◯ 
+  ╎   proce… /home/demo/code/api
+  └── running · 20m ago · 1h old  ─ ─ ─ ─ 
+[┌]{fg=DarkGray}[ ][●]{fg=Cyan}[ ][]{fg=74}[lead]{fg=Black,bg=74,+BOLD}[]{fg=74}[ ][────────────────────────────]{fg=DarkGray}[ ][→]{fg=White}[ ]
+[│]{fg=DarkGray}[   ][claude]{fg=#D68255}[ ][/home/demo/code/api]{fg=White,+BOLD}[     ][pane 2]{fg=White}[ ]
+[└─┬]{fg=DarkGray}[ ][working · 20m ago · 1h old]{fg=Cyan}[ ][──────────]{fg=DarkGray}[ ]
+[  │]{fg=DarkGray,bg=Reset}
+[  ]{fg=DarkGray,bg=Reset}[├]{fg=DarkGray}[ ][●]{fg=Green}[ ][]{fg=213}[helper]{fg=Black,bg=213,+BOLD}[]{fg=213}[ ][ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─]{fg=DarkGray}[ ][◯]{fg=#B4B4B4}[ ]
+[  ]{fg=DarkGray,bg=Reset}[╎]{fg=DarkGray}[   ][codex]{fg=#3EA682}[  ][/home/demo/code/api]{fg=#B4B4B4,+BOLD}
+[  ]{fg=DarkGray,bg=Reset}[├──]{fg=DarkGray}[ ][done · 20m ago · 1h old]{fg=Green}[ ][─ ─ ─ ─ ─ ─]{fg=DarkGray}[ ]
+[  │]{fg=DarkGray,bg=Reset}
+[  ]{fg=DarkGray,bg=Reset}[├]{fg=DarkGray}[ ][●]{fg=Gray}[ ][]{fg=209}[tests]{fg=Black,bg=209,+BOLD}[]{fg=209}[ ][─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─]{fg=DarkGray}[ ][◯]{fg=#B4B4B4}[ ]
+[  ]{fg=DarkGray,bg=Reset}[╎]{fg=DarkGray}[   ][proce…]{fg=DarkGray}[ ][/home/demo/code/api]{fg=#B4B4B4,+BOLD}
+[  ]{fg=DarkGray,bg=Reset}[└──]{fg=DarkGray}[ ][running · 20m ago · 1h old]{fg=Gray}[ ][ ─ ─ ─ ─]{fg=DarkGray}[ ]
+
+## family, compact preset (width 42)
+┌ ● lead ──────────────────────────── → 
+└─┬ claude working · 20m ago ───── pane 2 
+  │
+  ├ ● helper  ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ◯ 
+  ├── codex  done · 20m ago ─ ─ ─ ─ ─ ─ ─ 
+  │
+  ├ ● tests ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ◯ 
+  └── proce… running · 20m ago  ─ ─ ─ ─ ─ 
+[┌]{fg=DarkGray}[ ][●]{fg=Cyan}[ ][]{fg=74}[lead]{fg=Black,bg=74,+BOLD}[]{fg=74}[ ][────────────────────────────]{fg=DarkGray}[ ][→]{fg=White}[ ]
+[└─┬]{fg=DarkGray}[ ][claude]{fg=#D68255}[ ][working · 20m ago]{fg=Cyan}[ ][─────]{fg=DarkGray}[ ][pane 2]{fg=White}[ ]
+[  │]{fg=DarkGray,bg=Reset}
+[  ]{fg=DarkGray,bg=Reset}[├]{fg=DarkGray}[ ][●]{fg=Green}[ ][]{fg=213}[helper]{fg=Black,bg=213,+BOLD}[]{fg=213}[ ][ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─]{fg=DarkGray}[ ][◯]{fg=#B4B4B4}[ ]
+[  ]{fg=DarkGray,bg=Reset}[├──]{fg=DarkGray}[ ][codex]{fg=#3EA682}[  ][done · 20m ago]{fg=Green}[ ][─ ─ ─ ─ ─ ─ ─]{fg=DarkGray}[ ]
+[  │]{fg=DarkGray,bg=Reset}
+[  ]{fg=DarkGray,bg=Reset}[├]{fg=DarkGray}[ ][●]{fg=Gray}[ ][]{fg=209}[tests]{fg=Black,bg=209,+BOLD}[]{fg=209}[ ][─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─]{fg=DarkGray}[ ][◯]{fg=#B4B4B4}[ ]
+[  ]{fg=DarkGray,bg=Reset}[└──]{fg=DarkGray}[ ][proce…]{fg=DarkGray}[ ][running · 20m ago]{fg=Gray}[ ][ ─ ─ ─ ─ ─]{fg=DarkGray}[ ]
+
+## family, herdr preset (width 42)
+  ● lead                           pane 2 
+  │ claude working · 20m ago              
+  │
+  ├─● helper                              
+  │   codex  done · 20m ago               
+  │
+  └─● tests                               
+      proce… running · 20m ago            
+[ ]{fg=DarkGray}[ ][●]{fg=Cyan}[ ][lead]{fg=White,+BOLD}[ ][                         ]{fg=DarkGray}[ ][pane 2]{fg=White}[ ]
+[  │]{fg=DarkGray}[ ][claude]{fg=#D68255}[ ][working · 20m ago]{fg=Cyan}[ ][            ]{fg=DarkGray}[ ]
+[  │]{fg=DarkGray,bg=Reset}
+[  ├─]{fg=DarkGray,bg=Reset}[●]{fg=Green}[ ][helper]{fg=#B4B4B4,+BOLD}[ ][                             ]{fg=DarkGray}
+[  │ ]{fg=DarkGray,bg=Reset}[ ]{fg=DarkGray}[ ][codex]{fg=#3EA682}[  ][done · 20m ago]{fg=Green}[ ][             ]{fg=DarkGray}[ ]
+[  │]{fg=DarkGray,bg=Reset}
+[  └─]{fg=DarkGray,bg=Reset}[●]{fg=Gray}[ ][tests]{fg=#B4B4B4,+BOLD}[ ][                              ]{fg=DarkGray}
+[    ]{fg=DarkGray,bg=Reset}[ ]{fg=DarkGray}[ ][proce…]{fg=DarkGray}[ ][running · 20m ago]{fg=Gray}[ ][          ]{fg=DarkGray}[ ]
+
+## nested grandchild, pmux preset (width 42)
+┌ ● lead ──────────────────────────── → 
+│   claude /home/demo/code/api     pane 2 
+└─┬ working · 20m ago · 1h old ────────── 
+  │
+  ├ ● helper  ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ◯ 
+  ╎   codex  /home/demo/code/api
+  ├─┬ done · 20m ago · 1h old ─ ─ ─ ─ ─ ─ 
+  │ │
+  │ ├ ● helper-lint ─ ─ ─ ─ ─ ─ ─ ─ ─ ◯ 
+  │ ╎   claude /home/demo/code/api
+  │ └── working · 20m ago · 1h old  ─ ─ ─ 
+  │
+  ├ ● tests ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ◯ 
+  ╎   proce… /home/demo/code/api
+  └── running · 20m ago · 1h old  ─ ─ ─ ─ 
+[┌]{fg=DarkGray}[ ][●]{fg=Cyan}[ ][]{fg=74}[lead]{fg=Black,bg=74,+BOLD}[]{fg=74}[ ][────────────────────────────]{fg=DarkGray}[ ][→]{fg=White}[ ]
+[│]{fg=DarkGray}[   ][claude]{fg=#D68255}[ ][/home/demo/code/api]{fg=White,+BOLD}[     ][pane 2]{fg=White}[ ]
+[└─┬]{fg=DarkGray}[ ][working · 20m ago · 1h old]{fg=Cyan}[ ][──────────]{fg=DarkGray}[ ]
+[  │]{fg=DarkGray,bg=Reset}
+[  ]{fg=DarkGray,bg=Reset}[├]{fg=DarkGray}[ ][●]{fg=Green}[ ][]{fg=213}[helper]{fg=Black,bg=213,+BOLD}[]{fg=213}[ ][ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─]{fg=DarkGray}[ ][◯]{fg=#B4B4B4}[ ]
+[  ]{fg=DarkGray,bg=Reset}[╎]{fg=DarkGray}[   ][codex]{fg=#3EA682}[  ][/home/demo/code/api]{fg=#B4B4B4,+BOLD}
+[  ]{fg=DarkGray,bg=Reset}[├─┬]{fg=DarkGray}[ ][done · 20m ago · 1h old]{fg=Green}[ ][─ ─ ─ ─ ─ ─]{fg=DarkGray}[ ]
+[  │ │]{fg=DarkGray,bg=Reset}
+[  │ ]{fg=DarkGray,bg=Reset}[├]{fg=DarkGray}[ ][●]{fg=Cyan}[ ][]{fg=213}[helper-lint]{fg=Black,bg=213,+BOLD}[]{fg=213}[ ][─ ─ ─ ─ ─ ─ ─ ─ ─]{fg=DarkGray}[ ][◯]{fg=#B4B4B4}[ ]
+[  │ ]{fg=DarkGray,bg=Reset}[╎]{fg=DarkGray}[   ][claude]{fg=#D68255}[ ][/home/demo/code/api]{fg=#B4B4B4,+BOLD}
+[  │ ]{fg=DarkGray,bg=Reset}[└──]{fg=DarkGray}[ ][working · 20m ago · 1h old]{fg=Cyan}[ ][ ─ ─ ─]{fg=DarkGray}[ ]
+[  │]{fg=DarkGray,bg=Reset}
+[  ]{fg=DarkGray,bg=Reset}[├]{fg=DarkGray}[ ][●]{fg=Gray}[ ][]{fg=209}[tests]{fg=Black,bg=209,+BOLD}[]{fg=209}[ ][─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─]{fg=DarkGray}[ ][◯]{fg=#B4B4B4}[ ]
+[  ]{fg=DarkGray,bg=Reset}[╎]{fg=DarkGray}[   ][proce…]{fg=DarkGray}[ ][/home/demo/code/api]{fg=#B4B4B4,+BOLD}
+[  ]{fg=DarkGray,bg=Reset}[└──]{fg=DarkGray}[ ][running · 20m ago · 1h old]{fg=Gray}[ ][ ─ ─ ─ ─]{fg=DarkGray}[ ]
+
+## nested grandchild, compact preset (width 42)
+┌ ● lead ──────────────────────────── → 
+└─┬ claude working · 20m ago ───── pane 2 
+  │
+  ├ ● helper  ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ◯ 
+  ├─┬ codex  done · 20m ago ─ ─ ─ ─ ─ ─ ─ 
+  │ │
+  │ ├ ● helper-lint ─ ─ ─ ─ ─ ─ ─ ─ ─ ◯ 
+  │ └── claude working · 20m ago  ─ ─ ─ ─ 
+  │
+  ├ ● tests ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ◯ 
+  └── proce… running · 20m ago  ─ ─ ─ ─ ─ 
+[┌]{fg=DarkGray}[ ][●]{fg=Cyan}[ ][]{fg=74}[lead]{fg=Black,bg=74,+BOLD}[]{fg=74}[ ][────────────────────────────]{fg=DarkGray}[ ][→]{fg=White}[ ]
+[└─┬]{fg=DarkGray}[ ][claude]{fg=#D68255}[ ][working · 20m ago]{fg=Cyan}[ ][─────]{fg=DarkGray}[ ][pane 2]{fg=White}[ ]
+[  │]{fg=DarkGray,bg=Reset}
+[  ]{fg=DarkGray,bg=Reset}[├]{fg=DarkGray}[ ][●]{fg=Green}[ ][]{fg=213}[helper]{fg=Black,bg=213,+BOLD}[]{fg=213}[ ][ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─]{fg=DarkGray}[ ][◯]{fg=#B4B4B4}[ ]
+[  ]{fg=DarkGray,bg=Reset}[├─┬]{fg=DarkGray}[ ][codex]{fg=#3EA682}[  ][done · 20m ago]{fg=Green}[ ][─ ─ ─ ─ ─ ─ ─]{fg=DarkGray}[ ]
+[  │ │]{fg=DarkGray,bg=Reset}
+[  │ ]{fg=DarkGray,bg=Reset}[├]{fg=DarkGray}[ ][●]{fg=Cyan}[ ][]{fg=213}[helper-lint]{fg=Black,bg=213,+BOLD}[]{fg=213}[ ][─ ─ ─ ─ ─ ─ ─ ─ ─]{fg=DarkGray}[ ][◯]{fg=#B4B4B4}[ ]
+[  │ ]{fg=DarkGray,bg=Reset}[└──]{fg=DarkGray}[ ][claude]{fg=#D68255}[ ][working · 20m ago]{fg=Cyan}[ ][ ─ ─ ─ ─]{fg=DarkGray}[ ]
+[  │]{fg=DarkGray,bg=Reset}
+[  ]{fg=DarkGray,bg=Reset}[├]{fg=DarkGray}[ ][●]{fg=Gray}[ ][]{fg=209}[tests]{fg=Black,bg=209,+BOLD}[]{fg=209}[ ][─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─]{fg=DarkGray}[ ][◯]{fg=#B4B4B4}[ ]
+[  ]{fg=DarkGray,bg=Reset}[└──]{fg=DarkGray}[ ][proce…]{fg=DarkGray}[ ][running · 20m ago]{fg=Gray}[ ][ ─ ─ ─ ─ ─]{fg=DarkGray}[ ]
+
+## nested grandchild, herdr preset (width 42)
+  ● lead                           pane 2 
+  │ claude working · 20m ago              
+  │
+  ├─● helper                              
+  │ │ codex  done · 20m ago               
+  │ │
+  │ └─● helper-lint                       
+  │     claude working · 20m ago          
+  │
+  └─● tests                               
+      proce… running · 20m ago            
+[ ]{fg=DarkGray}[ ][●]{fg=Cyan}[ ][lead]{fg=White,+BOLD}[ ][                         ]{fg=DarkGray}[ ][pane 2]{fg=White}[ ]
+[  │]{fg=DarkGray}[ ][claude]{fg=#D68255}[ ][working · 20m ago]{fg=Cyan}[ ][            ]{fg=DarkGray}[ ]
+[  │]{fg=DarkGray,bg=Reset}
+[  ├─]{fg=DarkGray,bg=Reset}[●]{fg=Green}[ ][helper]{fg=#B4B4B4,+BOLD}[ ][                             ]{fg=DarkGray}
+[  │ ]{fg=DarkGray,bg=Reset}[│]{fg=DarkGray}[ ][codex]{fg=#3EA682}[  ][done · 20m ago]{fg=Green}[ ][             ]{fg=DarkGray}[ ]
+[  │ │]{fg=DarkGray,bg=Reset}
+[  │ └─]{fg=DarkGray,bg=Reset}[●]{fg=Cyan}[ ][helper-lint]{fg=#B4B4B4,+BOLD}[ ][                      ]{fg=DarkGray}
+[  │   ]{fg=DarkGray,bg=Reset}[ ]{fg=DarkGray}[ ][claude]{fg=#D68255}[ ][working · 20m ago]{fg=Cyan}[ ][        ]{fg=DarkGray}[ ]
+[  │]{fg=DarkGray,bg=Reset}
+[  └─]{fg=DarkGray,bg=Reset}[●]{fg=Gray}[ ][tests]{fg=#B4B4B4,+BOLD}[ ][                              ]{fg=DarkGray}
+[    ]{fg=DarkGray,bg=Reset}[ ]{fg=DarkGray}[ ][proce…]{fg=DarkGray}[ ][running · 20m ago]{fg=Gray}[ ][          ]{fg=DarkGray}[ ]
+
+## remote parent, pmux preset (width 42)
+┌ ● sidebar lineage ─ ─ ─ ─ ─ ─ ─ ─ ─ ◯ 
+╎   claude /home/demo/code/api
+╎   working · 20m ago · 1h old
+└── from lineage ios on macbook ─ ─ ─ ─ ─ 
+[┌]{fg=DarkGray}[ ][●]{fg=Cyan}[ ][]{fg=186}[sidebar lineage]{fg=Black,bg=186,+BOLD}[]{fg=186}[ ][─ ─ ─ ─ ─ ─ ─ ─ ─]{fg=DarkGray}[ ][◯]{fg=#B4B4B4}[ ]
+[╎]{fg=DarkGray}[   ][claude]{fg=#D68255}[ ][/home/demo/code/api]{fg=#B4B4B4,+BOLD}
+[╎]{fg=DarkGray}[   ][working · 20m ago · 1h old]{fg=Cyan}
+[└──]{fg=DarkGray}[ ][from lineage ios on macbook]{fg=DarkGray}[ ][─ ─ ─ ─ ─]{fg=DarkGray}[ ]
+
+## remote parent, compact preset (width 42)
+┌ ● sidebar lineage ─ ─ ─ ─ ─ ─ ─ ─ ─ ◯ 
+╎   claude working · 20m ago
+└── from lineage ios on macbook ─ ─ ─ ─ ─ 
+[┌]{fg=DarkGray}[ ][●]{fg=Cyan}[ ][]{fg=186}[sidebar lineage]{fg=Black,bg=186,+BOLD}[]{fg=186}[ ][─ ─ ─ ─ ─ ─ ─ ─ ─]{fg=DarkGray}[ ][◯]{fg=#B4B4B4}[ ]
+[╎]{fg=DarkGray}[   ][claude]{fg=#D68255}[ ][working · 20m ago]{fg=Cyan}
+[└──]{fg=DarkGray}[ ][from lineage ios on macbook]{fg=DarkGray}[ ][─ ─ ─ ─ ─]{fg=DarkGray}[ ]
+
+## remote parent, herdr preset (width 42)
+  ● sidebar lineage                       
+    claude working · 20m ago
+    from lineage ios on macbook           
+[ ]{fg=DarkGray}[ ][●]{fg=Cyan}[ ][sidebar lineage]{fg=#B4B4B4,+BOLD}[ ][                      ]{fg=DarkGray}
+[ ]{fg=DarkGray}[   ][claude]{fg=#D68255}[ ][working · 20m ago]{fg=Cyan}
+[   ]{fg=DarkGray}[ ][from lineage ios on macbook]{fg=DarkGray}[ ][         ]{fg=DarkGray}[ ]
+
+## unnamed parent, pmux preset (width 42)
+┌ ● ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ◯ 
+╎   claude /home/demo/code/api
+└─┬ idle · 20m ago · 1h old ─ ─ ─ ─ ─ ─ ─ 
+  │
+  ├ ● ts-docs ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ◯ 
+  ╎   claude /home/demo/code/api
+  └── idle · 20m ago · 1h old ─ ─ ─ ─ ─ ─ 
+[┌]{fg=DarkGray}[ ][●]{fg=DarkGray}[ ][─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─]{fg=DarkGray}[ ][◯]{fg=#B4B4B4}[ ]
+[╎]{fg=DarkGray}[   ][claude]{fg=#D68255}[ ][/home/demo/code/api]{fg=#B4B4B4,+BOLD}
+[└─┬]{fg=DarkGray}[ ][idle · 20m ago · 1h old]{fg=DarkGray}[ ][─ ─ ─ ─ ─ ─ ─]{fg=DarkGray}[ ]
+[  │]{fg=DarkGray,bg=Reset}
+[  ]{fg=DarkGray,bg=Reset}[├]{fg=DarkGray}[ ][●]{fg=DarkGray}[ ][]{fg=111}[ts-docs]{fg=Black,bg=111,+BOLD}[]{fg=111}[ ][─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─]{fg=DarkGray}[ ][◯]{fg=#B4B4B4}[ ]
+[  ]{fg=DarkGray,bg=Reset}[╎]{fg=DarkGray}[   ][claude]{fg=#D68255}[ ][/home/demo/code/api]{fg=#B4B4B4,+BOLD}
+[  ]{fg=DarkGray,bg=Reset}[└──]{fg=DarkGray}[ ][idle · 20m ago · 1h old]{fg=DarkGray}[ ][─ ─ ─ ─ ─ ─]{fg=DarkGray}[ ]
+
+## unnamed parent, compact preset (width 42)
+┌ ● /home/demo/code/api ─ ─ ─ ─ ─ ─ ─ ─ ◯ 
+└─┬ claude idle · 20m ago ─ ─ ─ ─ ─ ─ ─ ─ 
+  │
+  ├ ● ts-docs ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ◯ 
+  └── claude idle · 20m ago ─ ─ ─ ─ ─ ─ ─ 
+[┌]{fg=DarkGray}[ ][●]{fg=DarkGray}[ ][/home/demo/code/api]{fg=#B4B4B4,+BOLD}[ ][─ ─ ─ ─ ─ ─ ─ ─]{fg=DarkGray}[ ][◯]{fg=#B4B4B4}[ ]
+[└─┬]{fg=DarkGray}[ ][claude]{fg=#D68255}[ ][idle · 20m ago]{fg=DarkGray}[ ][─ ─ ─ ─ ─ ─ ─ ─]{fg=DarkGray}[ ]
+[  │]{fg=DarkGray,bg=Reset}
+[  ]{fg=DarkGray,bg=Reset}[├]{fg=DarkGray}[ ][●]{fg=DarkGray}[ ][]{fg=111}[ts-docs]{fg=Black,bg=111,+BOLD}[]{fg=111}[ ][─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─]{fg=DarkGray}[ ][◯]{fg=#B4B4B4}[ ]
+[  ]{fg=DarkGray,bg=Reset}[└──]{fg=DarkGray}[ ][claude]{fg=#D68255}[ ][idle · 20m ago]{fg=DarkGray}[ ][─ ─ ─ ─ ─ ─ ─]{fg=DarkGray}[ ]
+
+## unnamed parent, herdr preset (width 42)
+  ● /home/demo/code/api                   
+  │ claude idle · 20m ago                 
+  │
+  └─● ts-docs                             
+      claude idle · 20m ago               
+[ ]{fg=DarkGray}[ ][●]{fg=DarkGray}[ ][/home/demo/code/api]{fg=#B4B4B4,+BOLD}[ ][                  ]{fg=DarkGray}
+[  │]{fg=DarkGray}[ ][claude]{fg=#D68255}[ ][idle · 20m ago]{fg=DarkGray}[ ][               ]{fg=DarkGray}[ ]
+[  │]{fg=DarkGray,bg=Reset}
+[  └─]{fg=DarkGray,bg=Reset}[●]{fg=DarkGray}[ ][ts-docs]{fg=#B4B4B4,+BOLD}[ ][                            ]{fg=DarkGray}
+[    ]{fg=DarkGray,bg=Reset}[ ]{fg=DarkGray}[ ][claude]{fg=#D68255}[ ][idle · 20m ago]{fg=DarkGray}[ ][             ]{fg=DarkGray}[ ]
+
+## selected parent, pmux preset (width 42)
+┌ ● lead ──────────────────────────── → 
+│   claude /home/demo/code/api     pane 2 
+└─┬ working · 20m ago · 1h old ────────── 
+  │
+  ├ ● tests ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ◯ 
+  ╎   proce… /home/demo/code/api
+  └── running · 20m ago · 1h old  ─ ─ ─ ─ 
+[┌]{fg=DarkGray,bg=#3E3E3E}[ ][●]{fg=Cyan,bg=#3E3E3E}[ ][]{fg=74}[lead]{fg=Black,bg=74,+BOLD}[]{fg=74}[ ][────────────────────────────]{fg=DarkGray,bg=#3E3E3E}[ ][→]{fg=White,bg=#3E3E3E}[ ]
+[│]{fg=DarkGray,bg=#3E3E3E}[   ][claude]{fg=#D68255,bg=#3E3E3E}[ ][/home/demo/code/api]{fg=White,bg=#3E3E3E,+BOLD}[     ][pane 2]{fg=White,bg=#3E3E3E}[ ]
+[└─┬]{fg=DarkGray,bg=#3E3E3E}[ ][working · 20m ago · 1h old]{fg=Cyan,bg=#3E3E3E}[ ][──────────]{fg=DarkGray,bg=#3E3E3E}[ ]
+[  │]{fg=DarkGray,bg=Reset}
+[  ]{fg=DarkGray,bg=Reset}[├]{fg=DarkGray}[ ][●]{fg=Gray}[ ][]{fg=209}[tests]{fg=Black,bg=209,+BOLD}[]{fg=209}[ ][─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─]{fg=DarkGray}[ ][◯]{fg=#B4B4B4}[ ]
+[  ]{fg=DarkGray,bg=Reset}[╎]{fg=DarkGray}[   ][proce…]{fg=DarkGray}[ ][/home/demo/code/api]{fg=#B4B4B4,+BOLD}
+[  ]{fg=DarkGray,bg=Reset}[└──]{fg=DarkGray}[ ][running · 20m ago · 1h old]{fg=Gray}[ ][ ─ ─ ─ ─]{fg=DarkGray}[ ]
+
+## selected parent, compact preset (width 42)
+┌ ● lead ──────────────────────────── → 
+└─┬ claude working · 20m ago ───── pane 2 
+  │
+  ├ ● tests ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ◯ 
+  └── proce… running · 20m ago  ─ ─ ─ ─ ─ 
+[┌]{fg=DarkGray,bg=#3E3E3E}[ ][●]{fg=Cyan,bg=#3E3E3E}[ ][]{fg=74}[lead]{fg=Black,bg=74,+BOLD}[]{fg=74}[ ][────────────────────────────]{fg=DarkGray,bg=#3E3E3E}[ ][→]{fg=White,bg=#3E3E3E}[ ]
+[└─┬]{fg=DarkGray,bg=#3E3E3E}[ ][claude]{fg=#D68255,bg=#3E3E3E}[ ][working · 20m ago]{fg=Cyan,bg=#3E3E3E}[ ][─────]{fg=DarkGray,bg=#3E3E3E}[ ][pane 2]{fg=White,bg=#3E3E3E}[ ]
+[  │]{fg=DarkGray,bg=Reset}
+[  ]{fg=DarkGray,bg=Reset}[├]{fg=DarkGray}[ ][●]{fg=Gray}[ ][]{fg=209}[tests]{fg=Black,bg=209,+BOLD}[]{fg=209}[ ][─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─]{fg=DarkGray}[ ][◯]{fg=#B4B4B4}[ ]
+[  ]{fg=DarkGray,bg=Reset}[└──]{fg=DarkGray}[ ][proce…]{fg=DarkGray}[ ][running · 20m ago]{fg=Gray}[ ][ ─ ─ ─ ─ ─]{fg=DarkGray}[ ]
+
+## selected parent, herdr preset (width 42)
+  ● lead                           pane 2 
+  │ claude working · 20m ago              
+  │
+  └─● tests                               
+      proce… running · 20m ago            
+[ ]{fg=DarkGray,bg=#3E3E3E}[ ][●]{fg=Cyan,bg=#3E3E3E}[ ][lead]{fg=White,bg=#3E3E3E,+BOLD}[ ][                         ]{fg=DarkGray,bg=#3E3E3E}[ ][pane 2]{fg=White,bg=#3E3E3E}[ ]
+[  │]{fg=DarkGray,bg=#3E3E3E}[ ][claude]{fg=#D68255,bg=#3E3E3E}[ ][working · 20m ago]{fg=Cyan,bg=#3E3E3E}[ ][            ]{fg=DarkGray,bg=#3E3E3E}[ ]
+[  │]{fg=DarkGray,bg=Reset}
+[  └─]{fg=DarkGray,bg=Reset}[●]{fg=Gray}[ ][tests]{fg=#B4B4B4,+BOLD}[ ][                              ]{fg=DarkGray}
+[    ]{fg=DarkGray,bg=Reset}[ ]{fg=DarkGray}[ ][proce…]{fg=DarkGray}[ ][running · 20m ago]{fg=Gray}[ ][          ]{fg=DarkGray}[ ]
+
+## selected child, pmux preset (width 42)
+┌ ● lead ──────────────────────────── → 
+│   claude /home/demo/code/api     pane 2 
+└─┬ working · 20m ago · 1h old ────────── 
+  │
+  ├ ● helper  ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ◯ 
+  ╎   codex  /home/demo/code/api
+  ├── done · 20m ago · 1h old ─ ─ ─ ─ ─ ─ 
+  │
+  ├ ● tests ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ◯ 
+  ╎   proce… /home/demo/code/api
+  └── running · 20m ago · 1h old  ─ ─ ─ ─ 
+[┌]{fg=DarkGray}[ ][●]{fg=Cyan}[ ][]{fg=74}[lead]{fg=Black,bg=74,+BOLD}[]{fg=74}[ ][────────────────────────────]{fg=DarkGray}[ ][→]{fg=White}[ ]
+[│]{fg=DarkGray}[   ][claude]{fg=#D68255}[ ][/home/demo/code/api]{fg=White,+BOLD}[     ][pane 2]{fg=White}[ ]
+[└─┬]{fg=DarkGray}[ ][working · 20m ago · 1h old]{fg=Cyan}[ ][──────────]{fg=DarkGray}[ ]
+[  │]{fg=DarkGray,bg=Reset}
+[  ]{fg=DarkGray,bg=Reset}[├]{fg=DarkGray,bg=#3E3E3E}[ ][●]{fg=Green,bg=#3E3E3E}[ ][]{fg=213}[helper]{fg=Black,bg=213,+BOLD}[]{fg=213}[ ][ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─]{fg=DarkGray,bg=#3E3E3E}[ ][◯]{fg=#B4B4B4,bg=#3E3E3E}[ ]
+[  ]{fg=DarkGray,bg=Reset}[╎]{fg=DarkGray,bg=#3E3E3E}[   ][codex]{fg=#3EA682,bg=#3E3E3E}[  ][/home/demo/code/api]{fg=#B4B4B4,bg=#3E3E3E,+BOLD}
+[  ]{fg=DarkGray,bg=Reset}[├──]{fg=DarkGray,bg=#3E3E3E}[ ][done · 20m ago · 1h old]{fg=Green,bg=#3E3E3E}[ ][─ ─ ─ ─ ─ ─]{fg=DarkGray,bg=#3E3E3E}[ ]
+[  │]{fg=DarkGray,bg=Reset}
+[  ]{fg=DarkGray,bg=Reset}[├]{fg=DarkGray}[ ][●]{fg=Gray}[ ][]{fg=209}[tests]{fg=Black,bg=209,+BOLD}[]{fg=209}[ ][─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─]{fg=DarkGray}[ ][◯]{fg=#B4B4B4}[ ]
+[  ]{fg=DarkGray,bg=Reset}[╎]{fg=DarkGray}[   ][proce…]{fg=DarkGray}[ ][/home/demo/code/api]{fg=#B4B4B4,+BOLD}
+[  ]{fg=DarkGray,bg=Reset}[└──]{fg=DarkGray}[ ][running · 20m ago · 1h old]{fg=Gray}[ ][ ─ ─ ─ ─]{fg=DarkGray}[ ]
+
+## selected child, compact preset (width 42)
+┌ ● lead ──────────────────────────── → 
+└─┬ claude working · 20m ago ───── pane 2 
+  │
+  ├ ● helper  ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ◯ 
+  ├── codex  done · 20m ago ─ ─ ─ ─ ─ ─ ─ 
+  │
+  ├ ● tests ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ◯ 
+  └── proce… running · 20m ago  ─ ─ ─ ─ ─ 
+[┌]{fg=DarkGray}[ ][●]{fg=Cyan}[ ][]{fg=74}[lead]{fg=Black,bg=74,+BOLD}[]{fg=74}[ ][────────────────────────────]{fg=DarkGray}[ ][→]{fg=White}[ ]
+[└─┬]{fg=DarkGray}[ ][claude]{fg=#D68255}[ ][working · 20m ago]{fg=Cyan}[ ][─────]{fg=DarkGray}[ ][pane 2]{fg=White}[ ]
+[  │]{fg=DarkGray,bg=Reset}
+[  ]{fg=DarkGray,bg=Reset}[├]{fg=DarkGray,bg=#3E3E3E}[ ][●]{fg=Green,bg=#3E3E3E}[ ][]{fg=213}[helper]{fg=Black,bg=213,+BOLD}[]{fg=213}[ ][ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─]{fg=DarkGray,bg=#3E3E3E}[ ][◯]{fg=#B4B4B4,bg=#3E3E3E}[ ]
+[  ]{fg=DarkGray,bg=Reset}[├──]{fg=DarkGray,bg=#3E3E3E}[ ][codex]{fg=#3EA682,bg=#3E3E3E}[  ][done · 20m ago]{fg=Green,bg=#3E3E3E}[ ][─ ─ ─ ─ ─ ─ ─]{fg=DarkGray,bg=#3E3E3E}[ ]
+[  │]{fg=DarkGray,bg=Reset}
+[  ]{fg=DarkGray,bg=Reset}[├]{fg=DarkGray}[ ][●]{fg=Gray}[ ][]{fg=209}[tests]{fg=Black,bg=209,+BOLD}[]{fg=209}[ ][─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─]{fg=DarkGray}[ ][◯]{fg=#B4B4B4}[ ]
+[  ]{fg=DarkGray,bg=Reset}[└──]{fg=DarkGray}[ ][proce…]{fg=DarkGray}[ ][running · 20m ago]{fg=Gray}[ ][ ─ ─ ─ ─ ─]{fg=DarkGray}[ ]
+
+## selected child, herdr preset (width 42)
+  ● lead                           pane 2 
+  │ claude working · 20m ago              
+  │
+  ├─● helper                              
+  │   codex  done · 20m ago               
+  │
+  └─● tests                               
+      proce… running · 20m ago            
+[ ]{fg=DarkGray}[ ][●]{fg=Cyan}[ ][lead]{fg=White,+BOLD}[ ][                         ]{fg=DarkGray}[ ][pane 2]{fg=White}[ ]
+[  │]{fg=DarkGray}[ ][claude]{fg=#D68255}[ ][working · 20m ago]{fg=Cyan}[ ][            ]{fg=DarkGray}[ ]
+[  │]{fg=DarkGray,bg=Reset}
+[  ├─]{fg=DarkGray,bg=Reset}[●]{fg=Green,bg=#3E3E3E}[ ][helper]{fg=#B4B4B4,bg=#3E3E3E,+BOLD}[ ][                             ]{fg=DarkGray,bg=#3E3E3E}
+[  │ ]{fg=DarkGray,bg=Reset}[ ]{fg=DarkGray,bg=#3E3E3E}[ ][codex]{fg=#3EA682,bg=#3E3E3E}[  ][done · 20m ago]{fg=Green,bg=#3E3E3E}[ ][             ]{fg=DarkGray,bg=#3E3E3E}[ ]
+[  │]{fg=DarkGray,bg=Reset}
+[  └─]{fg=DarkGray,bg=Reset}[●]{fg=Gray}[ ][tests]{fg=#B4B4B4,+BOLD}[ ][                              ]{fg=DarkGray}
+[    ]{fg=DarkGray,bg=Reset}[ ]{fg=DarkGray}[ ][proce…]{fg=DarkGray}[ ][running · 20m ago]{fg=Gray}[ ][          ]{fg=DarkGray}[ ]
+
+## waiting child promoted to the top, pmux preset (width 42)
+┌ ● helper  ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ◯ 
+╎   codex  /home/demo/code/api
+╎   waiting · 20m ago · 1h old
+└── from lead ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ 
+
+┌ ● lead ──────────────────────────── → 
+│   claude /home/demo/code/api     pane 2 
+└─┬ working · 20m ago · 1h old ────────── 
+  │
+  ├ ● tests ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ◯ 
+  ╎   proce… /home/demo/code/api
+  └── running · 20m ago · 1h old  ─ ─ ─ ─ 
+[┌]{fg=DarkGray}[ ][●]{fg=Yellow}[ ][]{fg=213}[helper]{fg=Black,bg=213,+BOLD}[]{fg=213}[ ][ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─]{fg=DarkGray}[ ][◯]{fg=#B4B4B4}[ ]
+[╎]{fg=DarkGray}[   ][codex]{fg=#3EA682}[  ][/home/demo/code/api]{fg=#B4B4B4,+BOLD}
+[╎]{fg=DarkGray}[   ][waiting · 20m ago · 1h old]{fg=Yellow}
+[└──]{fg=DarkGray}[ ][from lead]{fg=DarkGray}[ ][─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─]{fg=DarkGray}[ ]
+
+[┌]{fg=DarkGray}[ ][●]{fg=Cyan}[ ][]{fg=74}[lead]{fg=Black,bg=74,+BOLD}[]{fg=74}[ ][────────────────────────────]{fg=DarkGray}[ ][→]{fg=White}[ ]
+[│]{fg=DarkGray}[   ][claude]{fg=#D68255}[ ][/home/demo/code/api]{fg=White,+BOLD}[     ][pane 2]{fg=White}[ ]
+[└─┬]{fg=DarkGray}[ ][working · 20m ago · 1h old]{fg=Cyan}[ ][──────────]{fg=DarkGray}[ ]
+[  │]{fg=DarkGray,bg=Reset}
+[  ]{fg=DarkGray,bg=Reset}[├]{fg=DarkGray}[ ][●]{fg=Gray}[ ][]{fg=209}[tests]{fg=Black,bg=209,+BOLD}[]{fg=209}[ ][─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─]{fg=DarkGray}[ ][◯]{fg=#B4B4B4}[ ]
+[  ]{fg=DarkGray,bg=Reset}[╎]{fg=DarkGray}[   ][proce…]{fg=DarkGray}[ ][/home/demo/code/api]{fg=#B4B4B4,+BOLD}
+[  ]{fg=DarkGray,bg=Reset}[└──]{fg=DarkGray}[ ][running · 20m ago · 1h old]{fg=Gray}[ ][ ─ ─ ─ ─]{fg=DarkGray}[ ]
+
+## waiting child promoted to the top, compact preset (width 42)
+┌ ● helper  ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ◯ 
+╎   codex  waiting · 20m ago
+└── from lead ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ 
+
+┌ ● lead ──────────────────────────── → 
+└─┬ claude working · 20m ago ───── pane 2 
+  │
+  ├ ● tests ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ◯ 
+  └── proce… running · 20m ago  ─ ─ ─ ─ ─ 
+[┌]{fg=DarkGray}[ ][●]{fg=Yellow}[ ][]{fg=213}[helper]{fg=Black,bg=213,+BOLD}[]{fg=213}[ ][ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─]{fg=DarkGray}[ ][◯]{fg=#B4B4B4}[ ]
+[╎]{fg=DarkGray}[   ][codex]{fg=#3EA682}[  ][waiting · 20m ago]{fg=Yellow}
+[└──]{fg=DarkGray}[ ][from lead]{fg=DarkGray}[ ][─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─]{fg=DarkGray}[ ]
+
+[┌]{fg=DarkGray}[ ][●]{fg=Cyan}[ ][]{fg=74}[lead]{fg=Black,bg=74,+BOLD}[]{fg=74}[ ][────────────────────────────]{fg=DarkGray}[ ][→]{fg=White}[ ]
+[└─┬]{fg=DarkGray}[ ][claude]{fg=#D68255}[ ][working · 20m ago]{fg=Cyan}[ ][─────]{fg=DarkGray}[ ][pane 2]{fg=White}[ ]
+[  │]{fg=DarkGray,bg=Reset}
+[  ]{fg=DarkGray,bg=Reset}[├]{fg=DarkGray}[ ][●]{fg=Gray}[ ][]{fg=209}[tests]{fg=Black,bg=209,+BOLD}[]{fg=209}[ ][─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─]{fg=DarkGray}[ ][◯]{fg=#B4B4B4}[ ]
+[  ]{fg=DarkGray,bg=Reset}[└──]{fg=DarkGray}[ ][proce…]{fg=DarkGray}[ ][running · 20m ago]{fg=Gray}[ ][ ─ ─ ─ ─ ─]{fg=DarkGray}[ ]
+
+## waiting child promoted to the top, herdr preset (width 42)
+  ● helper                                
+    codex  waiting · 20m ago
+    from lead                             
+
+  ● lead                           pane 2 
+  │ claude working · 20m ago              
+  │
+  └─● tests                               
+      proce… running · 20m ago            
+[ ]{fg=DarkGray}[ ][●]{fg=Yellow}[ ][helper]{fg=#B4B4B4,+BOLD}[ ][                               ]{fg=DarkGray}
+[ ]{fg=DarkGray}[   ][codex]{fg=#3EA682}[  ][waiting · 20m ago]{fg=Yellow}
+[   ]{fg=DarkGray}[ ][from lead]{fg=DarkGray}[ ][                           ]{fg=DarkGray}[ ]
+
+[ ]{fg=DarkGray}[ ][●]{fg=Cyan}[ ][lead]{fg=White,+BOLD}[ ][                         ]{fg=DarkGray}[ ][pane 2]{fg=White}[ ]
+[  │]{fg=DarkGray}[ ][claude]{fg=#D68255}[ ][working · 20m ago]{fg=Cyan}[ ][            ]{fg=DarkGray}[ ]
+[  │]{fg=DarkGray,bg=Reset}
+[  └─]{fg=DarkGray,bg=Reset}[●]{fg=Gray}[ ][tests]{fg=#B4B4B4,+BOLD}[ ][                              ]{fg=DarkGray}
+[    ]{fg=DarkGray,bg=Reset}[ ]{fg=DarkGray}[ ][proce…]{fg=DarkGray}[ ][running · 20m ago]{fg=Gray}[ ][          ]{fg=DarkGray}[ ]
+

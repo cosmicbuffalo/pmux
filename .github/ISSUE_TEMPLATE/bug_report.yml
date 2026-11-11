@@ -1,0 +1,49 @@
+name: Bug report
+description: Something in pmux does not work as documented
+labels: [bug]
+body:
+  - type: textarea
+    id: what-happened
+    attributes:
+      label: What happened
+      description: What you did, what you expected, and what happened instead.
+    validations:
+      required: true
+  - type: textarea
+    id: reproduce
+    attributes:
+      label: Steps to reproduce
+      placeholder: |
+        1. pmux run -s demo sleep 600
+        2. ...
+    validations:
+      required: true
+  - type: input
+    id: pmux-version
+    attributes:
+      label: pmux version
+      description: Output of `pmux --version`.
+    validations:
+      required: true
+  - type: input
+    id: tmux-version
+    attributes:
+      label: tmux version
+      description: Output of `tmux -V`.
+    validations:
+      required: true
+  - type: input
+    id: os
+    attributes:
+      label: Operating system
+      placeholder: e.g. Ubuntu 24.04, macOS 15
+    validations:
+      required: true
+  - type: textarea
+    id: doctor
+    attributes:
+      label: Diagnostics
+      description: |
+        If the problem involves agent attention signals, paste the output of
+        `pmux doctor ai-attn`. Remove anything you consider private.
+      render: text

@@ -1,0 +1,16 @@
+{
+  "api_version": 1,
+  "name": "agent",
+  "available": true,
+  "prompts": 3,
+  "tools": 7,
+  "input_tokens": 45678,
+  "output_tokens": 12345,
+  "lines_added": 10,
+  "lines_deleted": 4,
+  "first_at": 100,
+  "last_at": 300,
+  "recent_prompts": ["do the thing"],
+  "churn_series": [],
+  "output_token_series": []
+}

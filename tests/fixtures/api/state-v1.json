@@ -1,0 +1,39 @@
+{
+  "api_version": 1,
+  "generated_at": 40,
+  "sessions": [
+    {
+      "name": "agent",
+      "pane_id": "%1",
+      "lifecycle": "running",
+      "created_at": 10,
+      "last_activity_at": 20,
+      "attached_clients": 2,
+      "current_command": "codex",
+      "start_command": "codex",
+      "current_path": "/workspace",
+      "launch_command": "codex",
+      "launch_cwd": "/workspace",
+      "agent": {
+        "kind": "codex",
+        "state": "waiting",
+        "updated_at": 25,
+        "source": "ai-attn"
+      }
+    },
+    {
+      "name": "shell",
+      "pane_id": "%1",
+      "lifecycle": "running",
+      "created_at": 10,
+      "last_activity_at": 20,
+      "attached_clients": 2,
+      "current_command": "zsh",
+      "start_command": "zsh",
+      "current_path": "/workspace",
+      "launch_command": "zsh",
+      "launch_cwd": "/workspace",
+      "agent": null
+    }
+  ]
+}

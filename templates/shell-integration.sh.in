@@ -1,0 +1,45 @@
+# pmux installs this fragment between managed markers in ~/.zshrc or ~/.bashrc.
+# `pmux init`, `pmux wrap`, and `pmux unwrap` may replace the marked block.
+# Do not edit or copy the installed block. Put custom shell setup outside its
+# markers so pmux preserves it.
+#
+# `pmux wrap`/`unwrap` rewrite wrap.sh, but a child process can't define or
+# remove functions in this shell, so a prompt hook reloads wrap.sh whenever
+# its contents change. Every open shell picks up the change at its next
+# prompt. The hook uses only builtins, so the per-prompt check forks nothing.
+__pmux_wrap_reload() {
+  local rc=$? file="$HOME/.config/pmux/wrap.sh" text="" line
+  if [ -f "$file" ]; then
+    while IFS= read -r line || [ -n "$line" ]; do
+      text="$text$line
+"
+    done <"$file"
+  fi
+  if [ "$text" != "${__pmux_wrap_text-}" ]; then
+    # Re-sourcing can't remove a function, so unset every wrapper loaded
+    # last time; an unwrapped command then resolves to the real binary.
+    while IFS= read -r line; do
+      case $line in
+        "# pmux-wrap:"*) unset -f -- "${line#"# pmux-wrap:"}" 2>/dev/null ;;
+      esac
+    done <<EOF
+${__pmux_wrap_text-}
+EOF
+    __pmux_wrap_text=$text
+    if [ -f "$file" ]; then
+      # shellcheck source=/dev/null
+      . "$file"
+    fi
+  fi
+  return $rc
+}
+if [ -n "${ZSH_VERSION:-}" ]; then
+  autoload -Uz add-zsh-hook && add-zsh-hook precmd __pmux_wrap_reload
+elif [ -n "${BASH_VERSION:-}" ]; then
+  case "${PROMPT_COMMAND:-}" in
+    *__pmux_wrap_reload*) ;;
+    *) PROMPT_COMMAND="${PROMPT_COMMAND:+$PROMPT_COMMAND
+}__pmux_wrap_reload" ;;
+  esac
+fi
+__pmux_wrap_reload

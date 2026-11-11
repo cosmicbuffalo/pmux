@@ -1,0 +1,10 @@
+/target
+.claude/
+.env
+.DS_Store
+Thumbs.db
+*.swp
+*.swo
+.idea/
+.vscode/
+.local/
