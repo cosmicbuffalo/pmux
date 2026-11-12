@@ -84,7 +84,19 @@ pub(crate) fn defaults_cmd() -> Command {
 }
 
 pub(crate) fn tmux_output(make: &dyn Fn() -> Command, args: &[&str]) -> Result<String> {
-    let output = make().args(args).output()?;
+    let mut output = make().args(args).output()?;
+    // The config-free defaults server has no sessions, so it exits as soon as
+    // its client leaves; a second caller can reach it just as it does. These
+    // are reads, so ask again.
+    for _ in 0..3 {
+        if output.status.success()
+            || !String::from_utf8_lossy(&output.stderr).contains("server exited unexpectedly")
+        {
+            break;
+        }
+        std::thread::sleep(std::time::Duration::from_millis(50));
+        output = make().args(args).output()?;
+    }
     if !output.status.success() {
         bail!(
             "tmux {} failed: {}",

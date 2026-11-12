@@ -2848,11 +2848,24 @@ mod tmux_guard_tests {
                 });
             }
         }
-        let mut child = cmd
-            .stdout(std::process::Stdio::piped())
-            .stderr(std::process::Stdio::piped())
-            .spawn()
-            .unwrap();
+        cmd.stdout(std::process::Stdio::piped())
+            .stderr(std::process::Stdio::piped());
+        // Another test thread that forks while the guard script is still
+        // open for writing briefly holds that write handle in its child, and
+        // Linux refuses to exec a file open for writing (ETXTBSY). Retry
+        // until that child has exec'd and dropped it.
+        let mut attempts = 0;
+        let mut child = loop {
+            match cmd.spawn() {
+                Err(err)
+                    if err.kind() == std::io::ErrorKind::ExecutableFileBusy && attempts < 50 =>
+                {
+                    attempts += 1;
+                    std::thread::sleep(std::time::Duration::from_millis(20));
+                }
+                result => break result.unwrap(),
+            }
+        };
         let deadline = std::time::Instant::now() + std::time::Duration::from_secs(10);
         while child.try_wait().unwrap().is_none() {
             if std::time::Instant::now() > deadline {

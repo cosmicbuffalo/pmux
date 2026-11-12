@@ -77,7 +77,7 @@ impl MenuCommands {
         context: &crate::SidebarContext,
         sidebar_pane: &str,
     ) -> Self {
-        use rand::Rng;
+        use rand::RngExt;
         let token = rand::rng()
             .sample_iter(rand::distr::Alphanumeric)
             .take(MENU_TOKEN_LEN)
