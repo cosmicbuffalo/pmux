@@ -206,10 +206,16 @@ fn a_real_nested_spawn_records_its_parent() {
         assert!(Instant::now() < deadline, "child never started");
         std::thread::sleep(Duration::from_millis(100));
     }
-    assert_eq!(
-        sandbox.spawned_by("child"),
-        local("parent", sandbox.created("parent"))
-    );
+    // The inner `run -d` records the parent just after its session appears,
+    // so wait for the record rather than reading it the moment the session
+    // exists.
+    let expected = local("parent", sandbox.created("parent"));
+    let mut recorded = sandbox.spawned_by("child");
+    while recorded != expected && Instant::now() < deadline {
+        std::thread::sleep(Duration::from_millis(100));
+        recorded = sandbox.spawned_by("child");
+    }
+    assert_eq!(recorded, expected);
 }
 
 #[test]
