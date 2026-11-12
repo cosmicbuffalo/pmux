@@ -121,6 +121,19 @@ sets up [restoring your processes after a reboot](#after-a-reboot). Without a
 terminal (for example `curl ... | sh` in a script), setup does what needs no
 answer and lists the rest for you to finish.
 
+If your `~/.zshrc` belongs to someone else, such as a team dotfiles checkout
+that sources every file in `~/.zshrc.d/`, keep pmux's shell block in a file
+of its own:
+
+```sh
+pmux setup --rc-file ~/.zshrc.d/pmux
+```
+
+pmux saves the choice (`rc_file` under `[shell]` in
+`~/.config/pmux/config.toml`), so later `init`, `setup`, `wrap` and
+`unwrap` runs keep using that file, and it moves an existing block out of
+your old rc file. `pmux init` takes the same option.
+
 ## Typical usage
 
 Once your agents are wrapped, use them exactly as you did before. Typing

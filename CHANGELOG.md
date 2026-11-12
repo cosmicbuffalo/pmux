@@ -20,6 +20,12 @@
   and for Gemini CLI and Pi.
 - The installer's `PMUX_SKIP_SETUP=1` replaces `PMUX_SKIP_INIT=1` (still
   accepted), and `PMUX_SETUP_ARGS` passes options to `pmux setup`.
+- `pmux init --rc-file FILE` and `pmux setup --rc-file FILE` keep the shell
+  block in a file of its own, such as `~/.zshrc.d/pmux` when `~/.zshrc` is a
+  shared team file. The choice is saved as `rc_file` under `[shell]` in
+  `config.toml`, so later `init`, `setup`, `wrap` and `unwrap` runs keep
+  using it; switching moves the block out of the old rc file, and the
+  uninstaller removes it from the configured one.
 
 ## 0.1.0 — 2026-11-12
 

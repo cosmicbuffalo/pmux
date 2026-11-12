@@ -129,6 +129,34 @@ sourced_rc_files() {
     }' "$1"
 }
 
+# The file `pmux init --rc-file` / `pmux setup --rc-file` keeps the block in,
+# recorded as `rc_file` under [shell] in config.toml, with ~, $HOME and
+# ${HOME} expanded. Mirrors configured_rc_file in config.rs.
+configured_rc_file() {
+  config="$HOME/.config/pmux/config.toml"
+  [ -f "$config" ] || return 0
+  awk -v home="$HOME" '
+    /^[[:space:]]*\[/ { in_shell = ($0 ~ /^[[:space:]]*\[shell\][[:space:]]*(#.*)?$/); next }
+    in_shell && /^[[:space:]]*rc_file[[:space:]]*=/ {
+      v = $0
+      sub(/^[^=]*=[[:space:]]*/, "", v)
+      if (v ~ /^"/) { v = substr(v, 2); sub(/".*$/, "", v) }
+      else if (v ~ /^\047/) { v = substr(v, 2); sub(/\047.*$/, "", v) }
+      else next
+      if (v == "~") v = home
+      else if (substr(v, 1, 2) == "~/") v = home substr(v, 2)
+      else if (substr(v, 1, 8) == "${HOME}/") v = home substr(v, 8)
+      else if (substr(v, 1, 6) == "$HOME/") v = home substr(v, 6)
+      if (v ~ /^\//) print v
+      exit
+    }' "$config"
+}
+
+rc_file=$(configured_rc_file)
+if [ -n "$rc_file" ]; then
+  remove_pmux_block "$rc_file"
+fi
+
 for rc in "$HOME/.zshrc" "$HOME/.bashrc" "$HOME/.profile"; do
   [ -f "$rc" ] || continue
   remove_pmux_block "$rc"

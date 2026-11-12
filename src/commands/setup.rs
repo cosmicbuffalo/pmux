@@ -136,11 +136,25 @@ pub fn init() -> Result<(Option<PathBuf>, bool)> {
     ensure_wrap_sourced()
 }
 
-/// Like [`init`], but optionally also installs the cross-restart boot service.
-/// Returns the rc path, whether the rc changed, and any boot-service message.
-/// Called by `pmux init [--autostart]`.
-pub fn init_with_autostart(autostart: bool) -> Result<(Option<PathBuf>, bool, Option<String>)> {
-    let (rc_path, changed) = init()?;
+/// Like [`init`], but optionally also installs the cross-restart boot service,
+/// and first records `rc_file` (from `--rc-file`) as the file to keep the
+/// shell block in. Returns the rc path, whether the rc changed, and any
+/// boot-service message. Called by `pmux init` and `pmux setup`.
+pub fn init_with_autostart(
+    autostart: bool,
+    rc_file: Option<&str>,
+) -> Result<(Option<PathBuf>, bool, Option<String>)> {
+    // A file configured earlier that the flag replaces loses its block once
+    // the new one has it.
+    let mut previous = None;
+    if let Some(raw) = rc_file {
+        previous = crate::config::configured_rc_file()?;
+        crate::config::set_configured_rc_file(&crate::config::expand_rc_file_path(raw)?)?;
+    }
+    let (rc_path, mut changed) = init()?;
+    if let (Some(old), Some(new)) = (&previous, &rc_path) {
+        changed |= crate::config::move_block_out_of(old, new)?;
+    }
     let install_autostart = autostart || crate::restore::load_config().autostart_on_boot;
     let boot_message = if install_autostart {
         Some(crate::restore::install_boot_service()?)
@@ -282,7 +296,7 @@ mod tests {
             )
             .unwrap();
 
-            let (_, _, message) = init_with_autostart(false).expect("init");
+            let (_, _, message) = init_with_autostart(false, None).expect("init");
             assert!(message.is_some());
             #[cfg(target_os = "linux")]
             assert!(
@@ -294,6 +308,36 @@ mod tests {
                 tmp.join("Library/LaunchAgents/dev.pmux.restore.plist")
                     .exists()
             );
+        });
+    }
+
+    // `--rc-file` is saved and used; a later run without it keeps using the
+    // saved file, and `wrap` writes there too; an explicit flag replaces it.
+    #[test]
+    fn init_rc_file_flag_persists_and_an_explicit_flag_wins() {
+        with_temp_home(|tmp| {
+            let (rc, changed, _) = init_with_autostart(false, Some("~/.bashrc.d/pmux")).unwrap();
+            assert!(changed);
+            assert_eq!(rc, Some(tmp.join(".bashrc.d/pmux")));
+            assert!(!tmp.join(".bashrc").exists());
+
+            let (rc, changed, _) = init_with_autostart(false, None).unwrap();
+            assert!(!changed);
+            assert_eq!(rc, Some(tmp.join(".bashrc.d/pmux")));
+            let wrapped = wrap("codex").unwrap();
+            assert_eq!(wrapped.shell_rc_path, Some(tmp.join(".bashrc.d/pmux")));
+            assert!(!tmp.join(".bashrc").exists());
+
+            let (rc, _, _) = init_with_autostart(false, Some("$HOME/other.sh")).unwrap();
+            assert_eq!(rc, Some(tmp.join("other.sh")));
+            assert!(
+                fs::read_to_string(tmp.join("other.sh"))
+                    .unwrap()
+                    .contains("pmux wrap")
+            );
+            assert_eq!(fs::read_to_string(tmp.join(".bashrc.d/pmux")).unwrap(), "");
+            let config = fs::read_to_string(tmp.join(".config/pmux/config.toml")).unwrap();
+            assert!(config.contains("rc_file = \"~/other.sh\""), "{config}");
         });
     }
 

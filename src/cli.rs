@@ -663,6 +663,12 @@ enum Commands {
         /// How the sidebar and picker show processes (see `pmux preset`).
         #[arg(long)]
         preset: Option<String>,
+        /// Keep pmux's shell block in FILE instead of ~/.zshrc or ~/.bashrc
+        /// (for example ~/.zshrc.d/pmux when your rc file is shared). Saved
+        /// under [shell] rc_file in ~/.config/pmux/config.toml, so later runs
+        /// keep using it; the block moves out of the old rc file.
+        #[arg(long, value_name = "FILE")]
+        rc_file: Option<String>,
     },
 
     /// Set up shell completions and wrapper sourcing in your shell rc.
@@ -686,6 +692,12 @@ enum Commands {
         /// Remove pmux's agent guidance and stop installing it.
         #[arg(long)]
         no_agent_docs: bool,
+        /// Keep pmux's shell block in FILE instead of ~/.zshrc or ~/.bashrc
+        /// (for example ~/.zshrc.d/pmux when your rc file is shared). Saved
+        /// under [shell] rc_file in ~/.config/pmux/config.toml, so later runs
+        /// keep using it; the block moves out of the old rc file.
+        #[arg(long, value_name = "FILE")]
+        rc_file: Option<String>,
     },
 
     /// List the row presets, or switch the sidebar and picker to one.
@@ -2132,12 +2144,14 @@ pub fn run() -> Result<()> {
             skip,
             autostart,
             preset,
+            rc_file,
         }) => crate::onboard::run(crate::onboard::Options {
             yes,
             dry_run,
             skip,
             autostart,
             preset,
+            rc_file,
         }),
         Some(Commands::Init {
             autostart,
@@ -2145,8 +2159,10 @@ pub fn run() -> Result<()> {
             preset,
             agent_docs,
             no_agent_docs,
+            rc_file,
         }) => {
-            let (rc_path, changed, boot_message) = crate::init_with_autostart(autostart)?;
+            let (rc_path, changed, boot_message) =
+                crate::init_with_autostart(autostart, rc_file.as_deref())?;
             match preset {
                 Some(name) => {
                     crate::set_row_preset(&name)?;

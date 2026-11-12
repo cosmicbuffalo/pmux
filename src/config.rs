@@ -1,4 +1,4 @@
-use anyhow::{Context, Result, bail};
+use anyhow::{Context, Result, anyhow, bail};
 use std::env;
 use std::fs;
 #[cfg(unix)]
@@ -1141,7 +1141,11 @@ fn default_legacy_bell_hook_cleanup_script() -> &'static str {
 // Ensure the user's shell rc file sources pmux's wrap.sh and completions.
 // Returns the rc path and whether it was modified.
 pub(crate) fn ensure_wrap_sourced() -> Result<(Option<PathBuf>, bool)> {
-    let rc_path = select_shell_rc_path()?;
+    let configured = configured_rc_file()?;
+    let rc_path = match &configured {
+        Some(path) => Some(path.clone()),
+        None => default_shell_rc_path()?,
+    };
     let Some(rc_path) = rc_path else {
         return Ok((None, false));
     };
@@ -1149,14 +1153,209 @@ pub(crate) fn ensure_wrap_sourced() -> Result<(Option<PathBuf>, bool)> {
     let existing = read_text_for_rewrite(&rc_path)?.unwrap_or_default();
     let shell_name = detect_shell_name();
     let source_block = build_source_block(&shell_name);
-    let (next, changed) = upsert_pmux_source_block(&existing, &source_block)
+    let (next, mut changed) = upsert_pmux_source_block(&existing, &source_block)
         .with_context(|| format!("not updating {}", rc_path.display()))?;
     if changed {
+        // A configured file such as ~/.zshrc.d/pmux may live in a directory
+        // that does not exist yet.
+        if let Some(dir) = resolve_write_target(&rc_path)?.parent() {
+            fs::create_dir_all(dir)
+                .with_context(|| format!("failed to create {}", dir.display()))?;
+        }
         write_config_file(&rc_path, &next)
             .with_context(|| format!("failed to update {}", rc_path.display()))?;
     }
+    if configured.is_some() {
+        changed |= remove_block_from_default_rc(&rc_path)?;
+    }
 
     Ok((Some(rc_path), changed))
+}
+
+/// The table and key in config.toml that name the file pmux keeps its shell
+/// block in, set by `pmux init --rc-file` / `pmux setup --rc-file`.
+const SHELL_TABLE: &str = "shell";
+const RC_FILE_KEY: &str = "rc_file";
+
+/// Expand `~`, `$HOME` and `${HOME}` at the start of `raw`, and resolve a
+/// relative path against the current directory, so `--rc-file` works the
+/// same whether or not a shell expanded it first (Ansible's `command` module
+/// does not).
+pub(crate) fn expand_rc_file_path(raw: &str) -> Result<PathBuf> {
+    let raw = raw.trim();
+    if raw.is_empty() {
+        bail!("--rc-file needs a path");
+    }
+    let home = env::var("HOME").context("HOME is not set")?;
+    let expanded = if raw == "~" || raw == "$HOME" || raw == "${HOME}" {
+        home
+    } else if let Some(tail) = raw.strip_prefix("~/") {
+        format!("{home}/{tail}")
+    } else if let Some(tail) = raw
+        .strip_prefix("${HOME}/")
+        .or_else(|| raw.strip_prefix("$HOME/"))
+    {
+        format!("{home}/{tail}")
+    } else {
+        raw.to_string()
+    };
+    let path = PathBuf::from(expanded);
+    if path.is_absolute() {
+        Ok(path)
+    } else {
+        Ok(env::current_dir()
+            .context("failed to read the current directory")?
+            .join(path))
+    }
+}
+
+/// The shell block file named by `[shell] rc_file` in config.toml, if set.
+/// A config.toml that is not valid TOML is an error rather than a silent
+/// fallback to ~/.zshrc, which may be the very file the user asked pmux to
+/// leave alone.
+pub(crate) fn configured_rc_file() -> Result<Option<PathBuf>> {
+    let path = pmux_config_toml_path()?;
+    let text = match fs::read_to_string(&path) {
+        Ok(text) => text,
+        Err(err) if err.kind() == std::io::ErrorKind::NotFound => return Ok(None),
+        Err(err) => return Err(err).with_context(|| format!("failed to read {}", path.display())),
+    };
+    let table = toml::from_str::<toml::Table>(&text)
+        .map_err(|err| anyhow!("{} is not valid TOML: {}", path.display(), err.message()))?;
+    match table
+        .get(SHELL_TABLE)
+        .and_then(|shell| shell.get(RC_FILE_KEY))
+    {
+        None => Ok(None),
+        Some(toml::Value::String(raw)) => expand_rc_file_path(raw).map(Some),
+        Some(_) => bail!(
+            "{RC_FILE_KEY} under [{SHELL_TABLE}] in {} must be a string",
+            path.display()
+        ),
+    }
+}
+
+/// Record `path` as the file pmux keeps its shell block in, under
+/// `[shell] rc_file` in config.toml, leaving the rest of the file as it is.
+/// A path under HOME is written with `~/`.
+pub(crate) fn set_configured_rc_file(path: &Path) -> Result<PathBuf> {
+    if path.is_dir() {
+        bail!("--rc-file {} is a directory, not a file", path.display());
+    }
+    let home = env::var("HOME").context("HOME is not set")?;
+    let shown = match path.strip_prefix(&home) {
+        Ok(rest) if !rest.as_os_str().is_empty() => format!("~/{}", rest.display()),
+        _ => path.display().to_string(),
+    };
+    let config = pmux_config_toml_path()?;
+    let text = read_text_for_rewrite(&config)?.unwrap_or_default();
+    let edited = with_toml_string(&text, SHELL_TABLE, RC_FILE_KEY, &shown)
+        .with_context(|| format!("not updating {}", config.display()))?;
+    if edited != text {
+        if let Some(dir) = config.parent() {
+            fs::create_dir_all(dir)
+                .with_context(|| format!("failed to create {}", dir.display()))?;
+        }
+        write_config_file(&config, &edited)
+            .with_context(|| format!("failed to write {}", config.display()))?;
+    }
+    Ok(config)
+}
+
+/// `text` with `key = "value"` set in `[table]`: the key's line is replaced,
+/// or added under the table's header, or the table is added at the end. The
+/// result is checked, so a table written some other way (dotted keys, an
+/// inline table) is reported instead of being duplicated.
+fn with_toml_string(text: &str, table: &str, key: &str, value: &str) -> Result<String> {
+    toml::from_str::<toml::Table>(text)
+        .map_err(|err| anyhow!("config.toml is not valid TOML: {}", err.message()))?;
+    let setting = format!("{key} = {}", toml::Value::String(value.to_string()));
+    let header_line = format!("[{table}]");
+    let lines: Vec<&str> = text.lines().collect();
+    let edited = match lines.iter().position(|line| line.trim() == header_line) {
+        Some(header) => {
+            let end = lines[header + 1..]
+                .iter()
+                .position(|line| line.trim_start().starts_with('['))
+                .map_or(lines.len(), |offset| header + 1 + offset);
+            let existing = (header + 1..end).find(|&index| {
+                lines[index]
+                    .trim_start()
+                    .strip_prefix(key)
+                    .is_some_and(|rest| rest.trim_start().starts_with('='))
+            });
+            let mut edited: Vec<String> = lines.iter().map(|line| line.to_string()).collect();
+            match existing {
+                Some(index) => edited[index] = setting,
+                None => edited.insert(header + 1, setting),
+            }
+            let mut text = edited.join("\n");
+            text.push('\n');
+            text
+        }
+        None => {
+            let mut text = text.to_string();
+            if !text.is_empty() && !text.ends_with('\n') {
+                text.push('\n');
+            }
+            if !text.trim().is_empty() {
+                text.push('\n');
+            }
+            text.push_str(&format!("{header_line}\n{setting}\n"));
+            text
+        }
+    };
+    let parsed = toml::from_str::<toml::Table>(&edited).ok();
+    let written = parsed
+        .as_ref()
+        .and_then(|config| config.get(table)?.get(key)?.as_str());
+    if written != Some(value) {
+        bail!("could not set {key} in config.toml; set `{key}` under [{table}] there");
+    }
+    Ok(edited)
+}
+
+/// Once the block lives in a configured file, take pmux's own block out of
+/// the rc file pmux would have used otherwise (~/.zshrc, or the file it
+/// sources that held the block), so the shell does not load pmux twice.
+/// Only the lines between pmux's markers are removed, and a symlinked rc file
+/// stays a symlink. Returns whether a file changed.
+fn remove_block_from_default_rc(configured: &Path) -> Result<bool> {
+    match default_shell_rc_path()? {
+        Some(default) => move_block_out_of(&default, configured),
+        None => Ok(false),
+    }
+}
+
+/// Remove pmux's marked block from `old` now that it lives in `new`. Does
+/// nothing when both name the same file or `old` has no block. Returns
+/// whether `old` changed.
+pub(crate) fn move_block_out_of(old: &Path, new: &Path) -> Result<bool> {
+    if resolve_write_target(old)? == resolve_write_target(new)? {
+        return Ok(false);
+    }
+    let Ok(text) = fs::read_to_string(old) else {
+        return Ok(false);
+    };
+    if !has_pmux_wrap_block(&text) {
+        return Ok(false);
+    }
+    let mut lines = strip_marked_blocks(&text, PMUX_WRAP_START, PMUX_WRAP_END)
+        .with_context(|| format!("not removing pmux's block from {}", old.display()))?;
+    while lines.last().is_some_and(|line| line.trim().is_empty()) {
+        lines.pop();
+    }
+    let mut next = lines.join("\n");
+    if !next.is_empty() {
+        next.push('\n');
+    }
+    write_config_file(old, &next).with_context(|| format!("failed to update {}", old.display()))?;
+    println!(
+        "Moved pmux's shell block from {} to {}",
+        crate::display_path_buf(old),
+        crate::display_path_buf(new)
+    );
+    Ok(true)
 }
 
 // Extract the shell name (e.g. "zsh", "bash") from the SHELL env var.
@@ -1184,8 +1383,9 @@ fn build_source_block(shell_name: &str) -> String {
     )
 }
 
-// Determine the appropriate shell rc file (.zshrc, .bashrc, or .profile) to modify.
-fn select_shell_rc_path() -> Result<Option<PathBuf>> {
+// Determine the shell rc file (.zshrc, .bashrc, or .profile) pmux uses when
+// no `[shell] rc_file` is configured.
+fn default_shell_rc_path() -> Result<Option<PathBuf>> {
     let home = env::var("HOME").context("HOME is not set")?;
     let shell_name = detect_shell_name();
 
@@ -1291,10 +1491,11 @@ pub(crate) fn upsert_pmux_source_block(
 #[cfg(test)]
 mod tests {
     use super::{
-        GENERATED_CONFIG_VERSION, MANAGED_TMUX_BLOCK, default_ai_attn_setup_script,
-        ensure_pmux_config, ensure_wrap_sourced, managed_outer_sidebar_block, pmux_config_dir,
-        sourced_paths, tmux_conf_path, upgrade_managed_tmux_commands,
-        upsert_managed_outer_sidebar_block, upsert_managed_tmux_block, upsert_pmux_source_block,
+        GENERATED_CONFIG_VERSION, MANAGED_TMUX_BLOCK, configured_rc_file,
+        default_ai_attn_setup_script, ensure_pmux_config, ensure_wrap_sourced, expand_rc_file_path,
+        managed_outer_sidebar_block, pmux_config_dir, set_configured_rc_file, sourced_paths,
+        tmux_conf_path, upgrade_managed_tmux_commands, upsert_managed_outer_sidebar_block,
+        upsert_managed_tmux_block, upsert_pmux_source_block, with_toml_string,
     };
     use std::fs;
     use std::path::PathBuf;
@@ -1670,6 +1871,139 @@ mod tests {
             ensure_pmux_config().unwrap();
 
             assert!(cfg.join("session-age.sh").exists());
+        });
+    }
+
+    // --- [shell] rc_file (`--rc-file`) ---
+
+    // `~`, `$HOME` and `${HOME}` expand without a shell's help, and a
+    // relative path resolves against the current directory.
+    #[test]
+    fn test_expand_rc_file_path_expands_home_forms() {
+        with_temp_home("/bin/zsh", |tmp| {
+            for raw in [
+                "~/.zshrc.d/pmux",
+                "$HOME/.zshrc.d/pmux",
+                "${HOME}/.zshrc.d/pmux",
+            ] {
+                assert_eq!(
+                    expand_rc_file_path(raw).unwrap(),
+                    tmp.join(".zshrc.d/pmux"),
+                    "{raw}"
+                );
+            }
+            assert_eq!(
+                expand_rc_file_path("/etc/pmux.sh").unwrap(),
+                PathBuf::from("/etc/pmux.sh")
+            );
+            assert!(expand_rc_file_path("relative/pmux").unwrap().is_absolute());
+            assert!(expand_rc_file_path("  ").is_err());
+        });
+    }
+
+    // Setting the rc file keeps the rest of config.toml and is idempotent.
+    #[test]
+    fn test_set_configured_rc_file_keeps_other_settings() {
+        with_temp_home("/bin/zsh", |tmp| {
+            let config = tmp.join(".config/pmux/config.toml");
+            fs::create_dir_all(config.parent().unwrap()).unwrap();
+            fs::write(&config, "# mine\n[rows]\npreset = \"compact\"\n").unwrap();
+
+            set_configured_rc_file(&tmp.join(".zshrc.d/pmux")).unwrap();
+            let text = fs::read_to_string(&config).unwrap();
+            assert_eq!(
+                text,
+                "# mine\n[rows]\npreset = \"compact\"\n\n[shell]\nrc_file = \"~/.zshrc.d/pmux\"\n"
+            );
+            assert_eq!(
+                configured_rc_file().unwrap(),
+                Some(tmp.join(".zshrc.d/pmux"))
+            );
+
+            set_configured_rc_file(&tmp.join(".zshrc.d/pmux")).unwrap();
+            assert_eq!(fs::read_to_string(&config).unwrap(), text);
+
+            set_configured_rc_file(&PathBuf::from("/opt/pmux.sh")).unwrap();
+            let text = fs::read_to_string(&config).unwrap();
+            assert_eq!(text.matches("rc_file").count(), 1, "{text}");
+            assert!(text.contains("rc_file = \"/opt/pmux.sh\""), "{text}");
+        });
+    }
+
+    // An rc_file set some other way (an inline table) is reported, not
+    // duplicated into a second [shell] table.
+    #[test]
+    fn test_with_toml_string_refuses_what_it_cannot_edit() {
+        let inline = "shell = { rc_file = \"~/old\" }\n";
+        assert!(with_toml_string(inline, "shell", "rc_file", "~/new").is_err());
+        assert!(with_toml_string("not = [valid", "shell", "rc_file", "~/new").is_err());
+    }
+
+    // A configured file in a missing directory (a cpair's ~/.zshrc.d) is
+    // created, and ~/.zshrc is not created or touched.
+    #[test]
+    fn test_ensure_wrap_sourced_creates_configured_file_and_dir() {
+        with_temp_home("/bin/zsh", |tmp| {
+            set_configured_rc_file(&tmp.join(".zshrc.d/pmux")).unwrap();
+            let (rc_path, changed) = ensure_wrap_sourced().unwrap();
+            assert!(changed);
+            assert_eq!(rc_path, Some(tmp.join(".zshrc.d/pmux")));
+            let content = fs::read_to_string(tmp.join(".zshrc.d/pmux")).unwrap();
+            assert!(content.contains("# >>> pmux wrap >>>"));
+            assert!(content.contains("pmux completions zsh"));
+            assert!(!tmp.join(".zshrc").exists());
+
+            let (_, changed) = ensure_wrap_sourced().unwrap();
+            assert!(!changed, "a second run changes nothing");
+        });
+    }
+
+    // Switching to a configured file moves the block out of a symlinked,
+    // shared ~/.zshrc: only pmux's lines go, the symlink stays, and later
+    // runs (any caller of ensure_wrap_sourced, such as `pmux wrap`) keep
+    // writing to the configured file.
+    #[test]
+    fn test_ensure_wrap_sourced_moves_block_out_of_default_rc() {
+        with_temp_home("/bin/zsh", |tmp| {
+            let dotfiles = tmp.join("dotfiles");
+            fs::create_dir_all(&dotfiles).unwrap();
+            let shared = "export TEAM=1\nfor f in ~/.zshrc.d/*; do source $f; done\n";
+            fs::write(
+                dotfiles.join("zshrc"),
+                format!("{shared}\n# >>> pmux wrap >>>\nold\n# <<< pmux wrap <<<\n"),
+            )
+            .unwrap();
+            std::os::unix::fs::symlink("dotfiles/zshrc", tmp.join(".zshrc")).unwrap();
+
+            set_configured_rc_file(&tmp.join(".zshrc.d/pmux")).unwrap();
+            let (rc_path, changed) = ensure_wrap_sourced().unwrap();
+            assert!(changed);
+            assert_eq!(rc_path, Some(tmp.join(".zshrc.d/pmux")));
+            assert!(
+                fs::symlink_metadata(tmp.join(".zshrc"))
+                    .unwrap()
+                    .file_type()
+                    .is_symlink()
+            );
+            assert_eq!(fs::read_to_string(dotfiles.join("zshrc")).unwrap(), shared);
+
+            let (rc_path, changed) = ensure_wrap_sourced().unwrap();
+            assert!(!changed);
+            assert_eq!(rc_path, Some(tmp.join(".zshrc.d/pmux")));
+            assert_eq!(fs::read_to_string(dotfiles.join("zshrc")).unwrap(), shared);
+        });
+    }
+
+    // A config.toml that cannot be read as TOML stops the write instead of
+    // falling back to ~/.zshrc.
+    #[test]
+    fn test_ensure_wrap_sourced_refuses_invalid_config_toml() {
+        with_temp_home("/bin/zsh", |tmp| {
+            let config = tmp.join(".config/pmux/config.toml");
+            fs::create_dir_all(config.parent().unwrap()).unwrap();
+            fs::write(&config, "[shell\nrc_file = 1\n").unwrap();
+            assert!(ensure_wrap_sourced().is_err());
+            assert!(!tmp.join(".zshrc").exists());
         });
     }
 

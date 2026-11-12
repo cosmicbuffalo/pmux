@@ -119,3 +119,98 @@ fn without_a_terminal_it_asks_for_nothing_and_says_what_is_left() {
     assert_eq!(home.read(".tmux.conf"), "set -g mouse on\n");
     assert_eq!(home.read("ai-attn.log"), "");
 }
+
+/// A team machine: ~/.zshrc is a symlink into a shared dotfiles checkout that
+/// sources ~/.zshrc.d/*, and already holds a pmux block from an earlier
+/// `pmux init`. Unattended setup (no terminal, as from Ansible, with an
+/// unexpanded `~`) puts the block in ~/.zshrc.d/pmux, takes it out of the
+/// shared file, keeps using that file on later runs, and the uninstaller
+/// removes it from there.
+#[test]
+fn rc_file_keeps_the_block_out_of_a_shared_zshrc() {
+    let home = Home::new();
+    let root = home.path();
+    let dotfiles = root.join("dotfiles");
+    std::fs::create_dir_all(&dotfiles).unwrap();
+    let shared = "export TEAM=1\nfor f in ~/.zshrc.d/*; do source $f; done\n";
+    std::fs::write(
+        dotfiles.join("zshrc"),
+        format!("{shared}\n# >>> pmux wrap >>>\nold\n# <<< pmux wrap <<<\n"),
+    )
+    .unwrap();
+    std::os::unix::fs::symlink("dotfiles/zshrc", root.join(".zshrc")).unwrap();
+    let socket = format!("pmux-setup-rc-test-{}", std::process::id());
+    let run = |program: &str, args: &[&str]| {
+        let output = Command::new(program)
+            .args(args)
+            .env_clear()
+            .env("HOME", root)
+            .env("SHELL", "/bin/zsh")
+            .env("PMUX_SOCKET", &socket)
+            .env("PMUX_BIN_DIR", root.join("installed-bin"))
+            .env("PMUX_SHARE_DIR", root.join("installed-share"))
+            .env("PATH", format!("{}:/usr/bin:/bin", home.bin().display()))
+            .stdin(std::process::Stdio::null())
+            .output()
+            .unwrap();
+        assert!(
+            output.status.success(),
+            "{}",
+            String::from_utf8_lossy(&output.stderr)
+        );
+        String::from_utf8(output.stdout).unwrap()
+    };
+    let pmux = env!("CARGO_BIN_EXE_pmux");
+    let args = [
+        "setup",
+        "--yes",
+        "--skip",
+        "ai-attn,dredge,wrap,tmux",
+        "--rc-file",
+        "~/.zshrc.d/pmux",
+    ];
+
+    let dry = run(pmux, &[&args[..], &["--dry-run"]].concat());
+    assert!(dry.contains(".zshrc.d/pmux"), "{dry}");
+    assert!(!root.join(".zshrc.d").exists());
+
+    let stdout = run(pmux, &args);
+    assert!(stdout.contains("Moved pmux's shell block"), "{stdout}");
+    let block = home.read(".zshrc.d/pmux");
+    assert!(block.contains("# >>> pmux wrap >>>"), "{block}");
+    assert!(block.contains("pmux completions zsh"), "{block}");
+    assert_eq!(home.read("dotfiles/zshrc"), shared);
+    assert!(
+        std::fs::symlink_metadata(root.join(".zshrc"))
+            .unwrap()
+            .file_type()
+            .is_symlink()
+    );
+    assert!(
+        home.read(".config/pmux/config.toml")
+            .contains("[shell]\nrc_file = \"~/.zshrc.d/pmux\"")
+    );
+    assert_eq!(home.read("downloads"), "");
+
+    let again = run(
+        pmux,
+        &["setup", "--yes", "--skip", "ai-attn,dredge,wrap,tmux"],
+    );
+    assert!(
+        again.contains("Already set up in ~/.zshrc.d/pmux"),
+        "{again}"
+    );
+    assert_eq!(home.read("dotfiles/zshrc"), shared);
+    assert_eq!(home.read(".zshrc.d/pmux"), block);
+
+    run(
+        "sh",
+        &[
+            concat!(env!("CARGO_MANIFEST_DIR"), "/uninstall.sh"),
+            "--force",
+            "--keep-data",
+        ],
+    );
+    assert!(!home.read(".zshrc.d/pmux").contains("pmux wrap"));
+    assert_eq!(home.read("dotfiles/zshrc"), shared);
+}

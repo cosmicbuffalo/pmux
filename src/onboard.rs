@@ -35,6 +35,8 @@ pub(crate) struct Options {
     pub skip: Vec<Step>,
     pub autostart: bool,
     pub preset: Option<String>,
+    /// Keep the shell block in this file (`--rc-file`).
+    pub rc_file: Option<String>,
 }
 
 type Version = (u32, u32, u32);
@@ -283,10 +285,20 @@ pub(crate) fn run(opts: Options) -> Result<()> {
 fn shell_step(session: &mut Session) -> Result<()> {
     session.heading("Shell integration");
     if session.opts.dry_run {
-        println!("Would run `pmux init`: completions and wrappers in your shell rc file.");
+        match &session.opts.rc_file {
+            Some(raw) => println!(
+                "Would run `pmux init`: completions and wrappers in {}, \
+                 saved as [shell] rc_file in config.toml.",
+                crate::display_path_buf(&crate::config::expand_rc_file_path(raw)?)
+            ),
+            None => {
+                println!("Would run `pmux init`: completions and wrappers in your shell rc file.")
+            }
+        }
         return Ok(());
     }
-    let (rc_path, changed, boot_message) = crate::init_with_autostart(session.opts.autostart)?;
+    let (rc_path, changed, boot_message) =
+        crate::init_with_autostart(session.opts.autostart, session.opts.rc_file.as_deref())?;
     match (rc_path, changed) {
         (Some(rc), true) => {
             let rc = crate::display_path_buf(&rc);

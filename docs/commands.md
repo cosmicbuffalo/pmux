@@ -89,6 +89,7 @@ pmux setup --yes          # same, accepting every default
 pmux setup --dry-run      # show what setup would do
 pmux init                 # set up shell completions and wrapper sourcing only
 pmux init --autostart     # also install the boot service (restore after reboot)
+pmux setup --rc-file ~/.zshrc.d/pmux  # keep the shell block in its own file
 pmux preset [NAME]        # list the row presets, or switch the sidebar and picker to one
 ```
 
@@ -172,8 +173,8 @@ subcommands.
 
 | Command | When to use it | Example |
 | --- | --- | --- |
-| `setup` | Set up everything in one go: the shell integration from `init`, ai-attn (installed and wired into your agents) and Dredge, wrappers for the agent CLIs on your `PATH`, and the integration in your tmux config. Safe to rerun; it only does what is missing. `--yes` accepts every default, `--dry-run` shows the plan, and `--skip ai-attn,dredge,wrap,tmux` leaves steps out. | `pmux setup --yes` |
-| `init` | Install shell completions and wrapper sourcing. Add `--autostart` to install reboot restoration too. The first run at a terminal asks for a row preset; `--preset NAME` answers in advance. | `pmux init --autostart` |
+| `setup` | Set up everything in one go: the shell integration from `init`, ai-attn (installed and wired into your agents) and Dredge, wrappers for the agent CLIs on your `PATH`, and the integration in your tmux config. Safe to rerun; it only does what is missing. `--yes` accepts every default, `--dry-run` shows the plan, `--skip ai-attn,dredge,wrap,tmux` leaves steps out, and `--rc-file FILE` keeps the shell block in FILE (see [Wrappers](#wrappers)). | `pmux setup --yes` |
+| `init` | Install shell completions and wrapper sourcing. Add `--autostart` to install reboot restoration too. The first run at a terminal asks for a row preset; `--preset NAME` answers in advance. `--rc-file FILE` keeps the shell block in FILE (see [Wrappers](#wrappers)). | `pmux init --autostart` |
 | `preset` | List the row presets (`*` marks yours), or switch the sidebar and picker to one. See [Customizing the sidebar and picker](sidebar-customization.md#presets). | `pmux preset compact` |
 | `wrap` (`w`) | Make an ordinary command automatically launch through pmux in Bash or Zsh. | `pmux wrap codex` |
 | `wraps` / `unwrap` | List wrapped commands or remove a wrapper. | `pmux unwrap codex` |
@@ -227,6 +228,15 @@ curl -fsSL https://raw.githubusercontent.com/cosmicbuffalo/dredge/main/install.s
 This writes a wrapper function to `~/.config/pmux/wrap.sh` and auto-adds a managed source block to your shell rc (e.g. `~/.zshrc` or `~/.bashrc`) so wrappers load automatically. A prompt hook in that block reloads `wrap.sh` when it changes, so later wraps and unwraps take effect at the next prompt in every open shell.
 
 If your `~/.zshrc` is shared (for example a team dotfiles repo) and sources a personal file such as `~/.zshrc.local`, you can move the marked block into that personal file. As long as `~/.zshrc` has no block of its own, `pmux init`, `wrap` and `unwrap` refresh the block where it now lives instead of adding a new one to `~/.zshrc`, and the uninstaller removes it from there. pmux recognizes `source FILE` and `. FILE` lines whose path is literal or starts with `~`, `$HOME` or `${HOME}`.
+
+To choose the file outright, pass `--rc-file FILE` to `pmux init` or `pmux setup`, for example `--rc-file ~/.zshrc.d/pmux` when a shared `~/.zshrc` sources every file in `~/.zshrc.d/`. pmux creates the file and its directory if needed, expands a leading `~`, `$HOME` or `${HOME}` itself (so an unexpanded path from a script works), and saves the choice in `~/.config/pmux/config.toml`:
+
+```toml
+[shell]
+rc_file = "~/.zshrc.d/pmux"
+```
+
+From then on `init`, `setup`, `wrap` and `unwrap` write the block there without the flag, and a flag naming another file replaces the setting. Switching removes pmux's marked block from the file pmux used before (only the lines between its markers; a symlinked rc file stays a symlink), and the uninstaller removes the block from the configured file too.
 
 ```sh
 pmux wraps             # list currently wrapped commands
