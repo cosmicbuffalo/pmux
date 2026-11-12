@@ -57,7 +57,7 @@ HOME="$home_dir" \
 PMUX_BIN_DIR="$bin_dir" \
 PMUX_SHARE_DIR="$share_dir" \
 PMUX_RELEASE_BASE_URL="file://$release_dir" \
-PMUX_SKIP_INIT=1 \
+PMUX_SKIP_SETUP=1 \
 sh "$repo_dir/install.sh"
 
 test -x "$bin_dir/pmux"
@@ -129,7 +129,8 @@ ln -s "$real_home/dotfiles/bashrc" "$real_home/.bashrc"
 real_env() {
   env -u TMUX HOME="$real_home" SHELL=/bin/bash TMUX_TMPDIR="$real_tmux_tmp" \
     PMUX_SOCKET="$real_socket" PMUX_BIN_DIR="$real_bin" PMUX_SHARE_DIR="$real_share" \
-    PMUX_RELEASE_BASE_URL="file://$real_release" "$@"
+    PMUX_RELEASE_BASE_URL="file://$real_release" \
+    PMUX_SETUP_ARGS="--skip ai-attn,dredge" "$@"
 }
 
 # A checksum mismatch must abort before anything is installed.

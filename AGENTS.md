@@ -9,26 +9,28 @@ pmux is a process multiplexer that runs detachable CLI sessions on a dedicated t
 ## Setting pmux up for a user
 
 1. Check `tmux -V` and require 3.3a or newer.
-2. Install the releases tested together, then wire ai-attn into every
-   installed AI CLI:
+2. Install pmux. Its installer runs `pmux setup`, which installs ai-attn
+   and Dredge at the releases pmux is tested with, wires ai-attn into every
+   installed AI CLI, wraps the agent CLIs on `PATH`, and connects pmux to the
+   user's tmux. You have no terminal to answer its questions, so preview it
+   and then pass `--yes` (or `--skip wrap,tmux` to leave those to the user):
 
    ```bash
-   curl -fsSL https://raw.githubusercontent.com/cosmicbuffalo/ai-attn/v0.4.0/install.sh \
-     | AI_ATTN_VERSION=v0.4.0 bash
-   curl -fsSL https://raw.githubusercontent.com/cosmicbuffalo/pmux/v0.1.0/install.sh \
-     | PMUX_VERSION=v0.1.0 sh
-   "$HOME/.local/bin/ai-attn" setup
+   curl -fsSL https://raw.githubusercontent.com/cosmicbuffalo/pmux/main/install.sh \
+     | PMUX_SKIP_SETUP=1 sh
+   "$HOME/.local/bin/pmux" setup --dry-run
+   "$HOME/.local/bin/pmux" setup --yes
    "$HOME/.local/bin/ai-attn" doctor
    ```
 
    Make sure `~/.local/bin` is on `PATH`. From a checkout, `make install`
-   replaces the pmux installer (needs Rust 1.88+).
-3. Connect pmux to the user's tmux following
-   [docs/tmux-integration.md](docs/tmux-integration.md). For a plain config,
-   find the file the user's tmux server actually loads (commonly
-   `~/.tmux.conf` or `~/.config/tmux/tmux.conf`) and add
-   `source-file -q ~/.config/pmux/outer-tmux.conf` exactly once, near the end.
-   Preserve unrelated settings.
+   replaces the pmux installer (needs Rust 1.88+); run `pmux setup` after.
+3. Setup adds `source-file -q ~/.config/pmux/outer-tmux.conf` to a plain
+   tmux config (before TPM's `run` line, if any) and loads it into the
+   running tmux. For a tmux.rb config it only reports the line to add;
+   follow [docs/tmux-integration.md](docs/tmux-integration.md). If the
+   user's tmux loads a config setup did not find, add the line there
+   yourself, exactly once, near the end, preserving unrelated settings.
 4. If the user already has custom `window-status-format` values, keep them:
    remove the two format lines from `outer-tmux.conf` and insert
    `#{E:@ai_attn_window_segment}` before the window name in theirs. If TPM

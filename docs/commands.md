@@ -84,7 +84,10 @@ pmux doctor ai-attn       # diagnose ai-attn relay and tmux host-pane mappings
 pmux doctor ai-attn <name>  # why one process is or isn't relayed
 pmux equalize-panes <pane> --socket <path>  # even out your tmux panes, keeping the sidebar's width
 
-pmux init                 # set up shell completions and wrapper sourcing
+pmux setup                # set up everything: shell, ai-attn, Dredge, wrappers, tmux
+pmux setup --yes          # same, accepting every default
+pmux setup --dry-run      # show what setup would do
+pmux init                 # set up shell completions and wrapper sourcing only
 pmux init --autostart     # also install the boot service (restore after reboot)
 pmux preset [NAME]        # list the row presets, or switch the sidebar and picker to one
 ```
@@ -169,6 +172,7 @@ subcommands.
 
 | Command | When to use it | Example |
 | --- | --- | --- |
+| `setup` | Set up everything in one go: the shell integration from `init`, ai-attn (installed and wired into your agents) and Dredge, wrappers for the agent CLIs on your `PATH`, and the integration in your tmux config. Safe to rerun; it only does what is missing. `--yes` accepts every default, `--dry-run` shows the plan, and `--skip ai-attn,dredge,wrap,tmux` leaves steps out. | `pmux setup --yes` |
 | `init` | Install shell completions and wrapper sourcing. Add `--autostart` to install reboot restoration too. The first run at a terminal asks for a row preset; `--preset NAME` answers in advance. | `pmux init --autostart` |
 | `preset` | List the row presets (`*` marks yours), or switch the sidebar and picker to one. See [Customizing the sidebar and picker](sidebar-customization.md#presets). | `pmux preset compact` |
 | `wrap` (`w`) | Make an ordinary command automatically launch through pmux in Bash or Zsh. | `pmux wrap codex` |
@@ -259,4 +263,6 @@ terminal to receive it.
 - Launch commands stored in `~/.local/state/pmux/launch_cmds/` are plain text. Avoid passing secrets as command-line arguments.
 - The first pmux command you run creates `~/.config/pmux/` (generated tmux,
   theme, and status config you can customize) and `~/.local/state/pmux/`
-  (private runtime state). `pmux init` additionally edits your shell rc file.
+  (private runtime state). `pmux init` additionally edits your shell rc file,
+  and `pmux setup` also your tmux config and your agents' hook settings
+  (through `ai-attn setup`).

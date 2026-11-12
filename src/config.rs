@@ -100,7 +100,7 @@ fn status_conf_path() -> Result<PathBuf> {
 }
 
 // Return the optional outer tmux integration template.
-fn outer_tmux_conf_path() -> Result<PathBuf> {
+pub(crate) fn outer_tmux_conf_path() -> Result<PathBuf> {
     Ok(pmux_config_dir()?.join("outer-tmux.conf"))
 }
 

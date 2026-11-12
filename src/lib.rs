@@ -22,6 +22,7 @@ mod input;
 mod key_hints;
 mod keys;
 mod lineage;
+mod onboard;
 mod queue;
 mod queue_time;
 mod queue_ui;

@@ -20,7 +20,7 @@ listing every process and what each agent is doing.
 - [First-time setup](#first-time-setup)
 - [Typical usage](#typical-usage)
 - [The pmux sidebar](#the-pmux-sidebar)
-- [Optional add-ons](#optional-add-ons)
+- [What setup installs](#what-setup-installs)
 - [Documentation](#documentation)
 - [Development](#development)
 - [License](#license)
@@ -33,7 +33,7 @@ listing every process and what each agent is doing.
 - `curl` or `wget`, and `sha256sum` or `shasum`, for the installer
 - Rust 1.88 or newer, only to build from source
 
-See the [optional add-ons](#optional-add-ons) section for additional requirements per optional feature.
+`pmux setup` installs the [companion tools](#what-setup-installs) for you.
 
 ## Install
 
@@ -52,9 +52,11 @@ curl -fsSL https://raw.githubusercontent.com/cosmicbuffalo/pmux/main/install.sh 
   `gh attestation verify` and refuses a binary that fails; without `gh`, it
   prints the command to run yourself. `PMUX_VERIFY_ATTESTATION=1` makes the
   check mandatory and `0` skips it.
-- Runs `pmux init`, which adds a marked block to your shell rc file
-  (`~/.zshrc`, `~/.bashrc`, or `~/.profile`) for completions and wrappers.
-  `PMUX_SKIP_INIT=1` skips it; the uninstaller removes it.
+- Runs [`pmux setup`](#first-time-setup), which sets up your shell,
+  installs ai-attn and Dredge, and offers to wrap your agents and connect
+  your tmux. `PMUX_SKIP_SETUP=1` skips it, and
+  `PMUX_SETUP_ARGS="--yes"` (or `"--skip dredge"`, and so on) passes it
+  options. The uninstaller removes pmux's block from your shell rc file.
 - Checks your tmux is 3.3a or newer. If yours is new enough but reports an
   unusual version string, `PMUX_SKIP_TMUX_CHECK=1` skips the check.
 - `PMUX_VERSION=v0.1.0` pins a release instead of the latest.
@@ -82,57 +84,42 @@ running. `--keep-data` keeps config and state.
 
 ## First-time setup
 
-After installing, these steps give you the whole everyday setup.
+The installer runs `pmux setup`, so after installing you are usually done.
+It is safe to run again at any time: each step checks what is already in
+place and only does what is missing.
 
-1. **Wrap the agents you use**, one command per agent. Afterwards, typing the
-   plain command starts it inside pmux:
+```sh
+pmux setup            # asks before wrapping agents or editing your tmux config
+pmux setup --yes      # accepts every default
+pmux setup --dry-run  # shows what it would do
+```
 
-   ```sh
-   pmux wrap claude
-   ```
+It goes through these steps:
 
-   Open shells pick up a wrapper at their next prompt. `pmux wraps` lists wrappers, `pmux unwrap <command>` removes one, and `pmux run <command>` starts a one-off process, in case you want to run something in pmux but not wrap it.
+1. **Shell integration**: completions and wrapper sourcing in a marked
+   block of your shell rc file, plus a row preset and a short guide that
+   teaches your agents to use pmux (a Claude Code skill and a section in
+   Codex's and Gemini's global instructions; `pmux init --no-agent-docs`
+   removes it).
+2. **ai-attn**: installs the [release pmux is tested
+   with](#what-setup-installs) and wires its hooks into every agent you
+   have installed, so pmux knows when an agent is working, waiting, or done.
+3. **Dredge**: installs it for full-text search of past sessions.
+4. **Wrap your agents**: for each agent CLI on your `PATH` (`claude`,
+   `codex`, `gemini`, ...), typing the plain command then starts it inside
+   pmux. `pmux unwrap <command>` undoes one.
+5. **Connect your tmux**: adds
+   `source-file -q ~/.config/pmux/outer-tmux.conf` to your tmux config, for
+   the process sidebar on `prefix + Ctrl-p` and attention indicators on your
+   window tabs, and loads it into your running tmux. With a
+   [tmux.rb](https://github.com/cosmicbuffalo/tmux.rb) config it tells you
+   the line to add instead, and TPM users can load pmux as a plugin: see
+   [Integrating pmux with your tmux](docs/tmux-integration.md).
 
-2. **Optional, but recommended:** install these add-ons before step 3 (see
-   [Optional add-ons](#optional-add-ons) for what each adds):
-
-   - [ai-attn](https://github.com/cosmicbuffalo/ai-attn) for agent attention signals. Its installer sets up the agent hooks:
-
-     ```sh
-     curl -fsSL https://raw.githubusercontent.com/cosmicbuffalo/ai-attn/main/install.sh | bash
-     ```
-
-   - [Dredge](https://github.com/cosmicbuffalo/dredge) for full-text search of past sessions:
-
-     ```sh
-     curl -fsSL https://raw.githubusercontent.com/cosmicbuffalo/dredge/main/install.sh | sh
-     ```
-
-3. **Connect pmux to your own tmux**, if you use one, for the process sidebar on `prefix + Ctrl-p` and attention indicators on your window tabs. **Choose one** of these, depending on how you manage your tmux config:
-
-   - **A plain tmux config** (`~/.tmux.conf`):
-
-     ```sh
-     echo 'source-file -q ~/.config/pmux/outer-tmux.conf' >> ~/.tmux.conf && tmux source-file ~/.tmux.conf
-     ```
-
-   - **TPM:** add `set -g @plugin 'cosmicbuffalo/pmux'` with your other
-     plugins and press `prefix + I`.
-   - **[tmux.rb](https://github.com/cosmicbuffalo/tmux.rb):** add
-     `append Pmux.integration` to your configuration.
-
-   [Integrating pmux with your tmux](docs/tmux-integration.md) explains each option, what it adds, and how to keep your own window tab styling. Point one of your agents at these docs and it can help get you fully set up.
-
-4. **Optional: teach your agents to use pmux.** The installer offers this
-   once; to add it later, run:
-
-   ```sh
-   pmux init --agent-docs
-   ```
-
-   It installs a short guide as a Claude Code skill and a section in Codex's
-   and Gemini's global instructions, so your agents can start helpers in pmux
-   and drive each other. See [Scripting and agents](docs/scripting.md).
+`--skip ai-attn,dredge,wrap,tmux` leaves steps out, and `--autostart` also
+sets up [restoring your processes after a reboot](#after-a-reboot). Without a
+terminal (for example `curl ... | sh` in a script), setup does what needs no
+answer and lists the rest for you to finish.
 
 ## Typical usage
 
@@ -162,7 +149,7 @@ These keys and the rest of pmux's tmux server are yours to change: see
 
 | Command | What it does |
 | --- | --- |
-| `pmux a` | Attach from the picker. Type to filter; with [Dredge](#optional-add-ons) it also searches past Claude Code and Codex sessions, and picking one (`↻`) resumes it. |
+| `pmux a` | Attach from the picker. Type to filter; with [Dredge](#what-setup-installs) it also searches past Claude Code and Codex sessions, and picking one (`↻`) resumes it. |
 | `pmux l` | Reattach the process this pane showed last |
 | `pmux ls` | List running processes with their command, agent state, directory, and attached clients |
 | `pmux run <cmd>` | Start a one-off process without wrapping the command |
@@ -196,17 +183,20 @@ are Vim-like, and `?` lists them.
 row preset with `pmux preset`, or choose what rows show, their colors, and
 their keys: see [Customizing the sidebar and picker](docs/sidebar-customization.md).
 
-## Optional add-ons
+## What setup installs
 
-Each add-on is a separate tool; pmux works without any of them and lights up
-the matching features when one is installed. Their install commands are in
-[First-time setup](#first-time-setup).
+`pmux setup` installs these companion tools, each pinned to the release
+pmux is tested with. It never replaces a newer copy, and leaves alone a copy
+you installed some other way (such as with Cargo or Homebrew). Each
+installer checks its download's checksum.
 
-| Add-on | What it adds to pmux |
+| Tool | What it adds to pmux |
 | --- | --- |
 | [ai-attn](https://github.com/cosmicbuffalo/ai-attn) | Agent state (working, waiting, done) in the sidebar, the pmux status bar, and your tmux window tabs, plus `Ctrl-p a` to clear a signal. pmux installs its tmux companion, [tmux-ai-attn](https://github.com/cosmicbuffalo/tmux-ai-attn), for you. |
 | [Dredge](https://github.com/cosmicbuffalo/dredge) | Full-text search of past Claude Code and Codex sessions in `pmux a` and `Ctrl-p s`. |
 
+pmux still runs without them (skip either with `--skip`), but then it
+doesn't show agent state or search past sessions.
 [Integrating pmux with your tmux](docs/tmux-integration.md#check-that-it-works)
 shows how to check they work.
 

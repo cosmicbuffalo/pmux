@@ -28,9 +28,11 @@ After choosing, see [Sidebar options and the equalize key](#sidebar-options-and-
 
 ### A plain tmux config
 
-`pmux init` (run by the installer) writes `~/.config/pmux/outer-tmux.conf`.
-Source it near the end of your tmux config and reload. For `~/.tmux.conf`,
-one command does both:
+`pmux init` writes `~/.config/pmux/outer-tmux.conf`, and `pmux setup` (run
+by the installer) adds the line below to your tmux config and loads it, so
+usually there is nothing left to do here. To do it by hand, source it near
+the end of your tmux config and reload. For `~/.tmux.conf`, one command does
+both:
 
 ```sh
 echo 'source-file -q ~/.config/pmux/outer-tmux.conf' >> ~/.tmux.conf && tmux source-file ~/.tmux.conf

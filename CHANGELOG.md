@@ -1,5 +1,20 @@
 # Changelog
 
+## Unreleased
+
+### Setup
+
+- `pmux setup` sets up everything in one command, and the installer now
+  runs it in place of `pmux init`. It runs the shell integration, installs
+  ai-attn and Dredge at the releases pmux is tested with (upgrading copies
+  their installers put there, never replacing a newer one or one installed
+  another way), wires ai-attn into every installed agent, wraps the agent
+  CLIs on your `PATH`, and adds the integration to your tmux config. It is
+  safe to rerun; `--yes`, `--dry-run`, and `--skip` control it. ai-attn and
+  Dredge are no longer optional add-ons to install yourself.
+- The installer's `PMUX_SKIP_SETUP=1` replaces `PMUX_SKIP_INIT=1` (still
+  accepted), and `PMUX_SETUP_ARGS` passes options to `pmux setup`.
+
 ## 0.1.0 — 2026-11-12
 
 First public release.

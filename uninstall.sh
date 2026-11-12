@@ -156,3 +156,12 @@ fi
 if [ "$KEEP_DATA" -eq 1 ]; then
   echo "Configuration and state were preserved."
 fi
+if [ -x "$HOME/.local/share/ai-attn/uninstall.sh" ] || [ -x "$HOME/.local/bin/dredge" ]; then
+  echo "ai-attn and Dredge, which 'pmux setup' installs, were left in place:"
+  if [ -x "$HOME/.local/share/ai-attn/uninstall.sh" ]; then
+    echo "  bash ~/.local/share/ai-attn/uninstall.sh   # removes ai-attn and its agent hooks"
+  fi
+  if [ -x "$HOME/.local/bin/dredge" ]; then
+    echo "  rm ~/.local/bin/dredge                     # its index is in ~/.local/share/dredge"
+  fi
+fi

@@ -644,6 +644,27 @@ enum Commands {
         shell: clap_complete::Shell,
     },
 
+    /// Set up everything in one go: shell integration, ai-attn and Dredge,
+    /// agent hooks, wrappers for your agents, and your tmux. Safe to rerun;
+    /// it only does what is missing.
+    Setup {
+        /// Accept every default without asking.
+        #[arg(long, short = 'y')]
+        yes: bool,
+        /// Show what would happen without changing anything.
+        #[arg(long)]
+        dry_run: bool,
+        /// Leave out a step (repeatable, or comma-separated).
+        #[arg(long, value_enum, value_delimiter = ',')]
+        skip: Vec<crate::onboard::Step>,
+        /// Also install the boot service so pmux restores sessions after a reboot.
+        #[arg(long)]
+        autostart: bool,
+        /// How the sidebar and picker show processes (see `pmux preset`).
+        #[arg(long)]
+        preset: Option<String>,
+    },
+
     /// Set up shell completions and wrapper sourcing in your shell rc.
     Init {
         /// Also install the boot service so pmux restores sessions after a reboot.
@@ -1029,6 +1050,10 @@ fn build_help_text(binary: &str) -> String {
         (
             "Setup and diagnostics",
             &[
+                (
+                    "setup [--yes]",
+                    "Install and wire everything; safe to rerun",
+                ),
                 (
                     "init [--autostart]",
                     "Shell integration; --autostart restores at login",
@@ -2101,6 +2126,19 @@ pub fn run() -> Result<()> {
                 Ok(())
             }
         }
+        Some(Commands::Setup {
+            yes,
+            dry_run,
+            skip,
+            autostart,
+            preset,
+        }) => crate::onboard::run(crate::onboard::Options {
+            yes,
+            dry_run,
+            skip,
+            autostart,
+            preset,
+        }),
         Some(Commands::Init {
             autostart,
             tmux_rb,

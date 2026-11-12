@@ -6,7 +6,11 @@
 #   PMUX_VERSION              release to install (default: latest)
 #   PMUX_BIN_DIR              binary directory (default: ~/.local/bin)
 #   PMUX_SHARE_DIR            uninstaller directory (default: ~/.local/share/pmux)
-#   PMUX_SKIP_INIT=1          do not run `pmux init` (which edits a shell rc file)
+#   PMUX_SKIP_SETUP=1         do not run `pmux setup`, which edits your shell rc
+#                             and tmux config and installs ai-attn and Dredge
+#                             (PMUX_SKIP_INIT=1 is the old name and still works)
+#   PMUX_SETUP_ARGS           extra arguments for `pmux setup`, such as
+#                             "--yes" or "--skip dredge"
 #   PMUX_SKIP_TMUX_CHECK=1    install even if tmux is missing or not recognized
 #   PMUX_VERIFY_ATTESTATION   auto (default): verify GitHub build provenance when
 #                             an authenticated `gh` is available; 1: require it;
@@ -208,22 +212,32 @@ main() {
   install -m 0755 "$binary" "$BIN_DIR/pmux"
   install -m 0755 "$uninstaller" "$SHARE_DIR/uninstall.sh"
 
-  if [ "${PMUX_SKIP_INIT:-0}" != "1" ]; then
-    echo "Running 'pmux init': it writes ~/.config/pmux and adds a marked"
-    echo "'pmux wrap' block to your shell rc file (~/.zshrc, ~/.bashrc or ~/.profile)"
-    echo "for completions and command wrappers. Set PMUX_SKIP_INIT=1 to skip this;"
-    echo "the uninstaller removes the block."
-    # Under `curl | sh` this script is stdin, so give init the terminal for its
-    # one-time questions (row preset, agent guide) when there is one.
-    if (: </dev/tty) 2>/dev/null; then
-      "$BIN_DIR/pmux" init </dev/tty
-    else
-      "$BIN_DIR/pmux" init
+  if [ "${PMUX_SKIP_SETUP:-${PMUX_SKIP_INIT:-0}}" != "1" ]; then
+    echo "Running 'pmux setup': it adds a marked block to your shell rc file,"
+    echo "installs ai-attn (agent state) and Dredge (session search), wires"
+    echo "ai-attn into your agents, and offers to wrap your agents and connect"
+    echo "pmux to your tmux. Set PMUX_SKIP_SETUP=1 to skip it; rerun it any time"
+    echo "with 'pmux setup'."
+    # Under `curl | sh` this script is stdin, so give setup the terminal for
+    # its questions when there is one. Setup also reloads a running pmux
+    # server, which keeps the old binary's config until then.
+    setup=setup
+    # Releases before `pmux setup` (PMUX_VERSION=v0.1.0) only have init.
+    if ! "$BIN_DIR/pmux" setup --help >/dev/null 2>&1; then
+      setup=init
     fi
-    # A pmux server that is already running keeps the old binary's config and
-    # relay until it reloads, so new key bindings would not work yet.
-    "$BIN_DIR/pmux" restart ||
-      echo "Could not reload the running pmux server; run 'pmux restart'." >&2
+    # shellcheck disable=SC2086 # PMUX_SETUP_ARGS is a word list on purpose
+    if (: </dev/tty) 2>/dev/null; then
+      "$BIN_DIR/pmux" "$setup" ${PMUX_SETUP_ARGS:-} </dev/tty ||
+        echo "pmux setup did not finish; rerun 'pmux setup'." >&2
+    else
+      "$BIN_DIR/pmux" "$setup" ${PMUX_SETUP_ARGS:-} ||
+        echo "pmux setup did not finish; rerun 'pmux setup'." >&2
+    fi
+    if [ "$setup" = init ]; then
+      "$BIN_DIR/pmux" restart ||
+        echo "Could not reload the running pmux server; run 'pmux restart'." >&2
+    fi
   fi
 
   echo "pmux installed to $BIN_DIR/pmux"

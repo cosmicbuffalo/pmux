@@ -53,6 +53,9 @@ const DETECTION_ORDER: [Agent; 7] = [
 ];
 
 impl Agent {
+    /// Every agent pmux recognizes.
+    pub(crate) const ALL: [Agent; 7] = DETECTION_ORDER;
+
     /// The agent's lowercase name, as used in ai-attn records and snapshots.
     pub(crate) fn name(self) -> &'static str {
         match self {
