@@ -15,8 +15,10 @@ recreates them on demand, resuming AI agent conversations where they left off.
   from `ai-attn`) in durable per-session metadata, so a later refresh cannot
   erase it after the attention record expires. Restore relaunches agents with
   their own resume command —
-  `claude --resume <id>`, `codex resume <id>`, `opencode --session <id>` —
-  instead of a fresh conversation. By default, agents without a captured id
+  `claude --resume <id>`, `codex resume <id>`, `opencode --session <id>`,
+  `copilot --resume=<id>`, `grok --resume <id>`, `pi`/`omp --session <id>` —
+  instead of a fresh conversation. Gemini CLI and Antigravity (`agy`) have no
+  confirmed resume command yet. By default, agents without a captured id
   are skipped and make `pmux restore` fail rather than silently opening a fresh
   conversation.
 - **Restore.** `pmux restore` recreates snapshotted sessions that aren't

@@ -131,8 +131,8 @@ string containing another JSON document; parse the output once with a JSON
 parser. Compact output does not fall back to `start_command` if
 `launch_command` is `null`.
 
-`agent` has `kind` (`claude`, `codex`, `gemini`, `opencode`, `pi`, or
-`muse`; more may be added), and `state`, `updated_at`, and `source`, which are
+`agent` has `kind` (`claude`, `codex`, `copilot`, `cortex`, `gemini`, `agy`,
+`grok`, `opencode`, `muse`, `pi`, or `omp`; more may be added), and `state`, `updated_at`, and `source`, which are
 all `null` unless a matching direct ai-attn record exists. `state` is passed
 through from ai-attn unchanged (currently values such as `working`,
 `waiting`, and `done`), so treat it as an opaque label. pmux does not infer

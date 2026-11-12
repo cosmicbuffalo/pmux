@@ -31,39 +31,51 @@ use std::path::{Path, PathBuf};
 /// An AI agent CLI pmux recognizes.
 #[derive(Debug, Clone, Copy, PartialEq, Eq, Hash)]
 pub(crate) enum Agent {
+    Agy,
     Claude,
     Codex,
+    Copilot,
     Cortex,
     Gemini,
+    Grok,
     Muse,
+    Omp,
     OpenCode,
     Pi,
 }
 
 // Detection order matters only for prefixes of one another; `opencode` is
 // listed first so it can never be shadowed if a shorter name is added.
-const DETECTION_ORDER: [Agent; 7] = [
+const DETECTION_ORDER: [Agent; 11] = [
     Agent::OpenCode,
     Agent::Codex,
     Agent::Claude,
+    Agent::Copilot,
     Agent::Cortex,
     Agent::Gemini,
+    Agent::Grok,
     Agent::Muse,
+    Agent::Omp,
     Agent::Pi,
+    Agent::Agy,
 ];
 
 impl Agent {
     /// Every agent pmux recognizes.
-    pub(crate) const ALL: [Agent; 7] = DETECTION_ORDER;
+    pub(crate) const ALL: [Agent; 11] = DETECTION_ORDER;
 
     /// The agent's lowercase name, as used in ai-attn records and snapshots.
     pub(crate) fn name(self) -> &'static str {
         match self {
+            Agent::Agy => "agy",
             Agent::Claude => "claude",
             Agent::Codex => "codex",
+            Agent::Copilot => "copilot",
             Agent::Cortex => "cortex",
             Agent::Gemini => "gemini",
+            Agent::Grok => "grok",
             Agent::Muse => "muse",
+            Agent::Omp => "omp",
             Agent::OpenCode => "opencode",
             Agent::Pi => "pi",
         }
@@ -104,7 +116,8 @@ impl Agent {
     /// agent has no known resume command or the id is unsafe.
     ///
     /// NOTE: `gemini` is intentionally absent pending confirmation of its
-    /// resume flag; restore treats it as having no resume command.
+    /// resume flag, and `agy` has no resume flag; restore treats both as
+    /// having no resume command.
     pub(crate) fn resume_argv(self, session_id: &str) -> Option<Vec<String>> {
         if !valid_session_id(session_id) {
             return None;
@@ -122,7 +135,12 @@ impl Agent {
             // does not already select a session, so `--session` here
             // suppresses that and resumes the recorded session instead.
             Agent::Pi => vec!["pi".into(), "--session".into(), id],
-            Agent::Gemini => return None,
+            Agent::Omp => vec!["omp".into(), "--session".into(), id],
+            // `--resume` takes an optional value; Copilot documents the
+            // `--resume=<id>` form.
+            Agent::Copilot => vec!["copilot".into(), format!("--resume={id}")],
+            Agent::Grok => vec!["grok".into(), "--resume".into(), id],
+            Agent::Gemini | Agent::Agy => return None,
         };
         Some(argv)
     }
@@ -395,6 +413,11 @@ other = 1
         assert_eq!(detect("gemini"), Some("gemini"));
         assert_eq!(detect("muse"), Some("muse"));
         assert_eq!(detect("pi"), Some("pi"));
+        assert_eq!(detect("copilot --yolo"), Some("copilot"));
+        assert_eq!(detect("grok"), Some("grok"));
+        assert_eq!(detect("/usr/local/bin/agy"), Some("agy"));
+        assert_eq!(detect("omp"), Some("omp"));
+        assert_eq!(detect("ompa"), None);
         assert_eq!(detect("cortex"), Some("cortex"));
         assert_eq!(
             detect("/home/user/.local/bin/cortex resume abc"),
@@ -497,8 +520,33 @@ other = 1
     }
 
     #[test]
+    fn resume_argv_for_newer_agents() {
+        assert_eq!(
+            resume_argv("copilot", "abc-123"),
+            Some(vec!["copilot".to_string(), "--resume=abc-123".to_string()])
+        );
+        assert_eq!(
+            resume_argv("grok", "abc-123"),
+            Some(vec![
+                "grok".to_string(),
+                "--resume".to_string(),
+                "abc-123".to_string()
+            ])
+        );
+        assert_eq!(
+            resume_argv("omp", "abc-123"),
+            Some(vec![
+                "omp".to_string(),
+                "--session".to_string(),
+                "abc-123".to_string()
+            ])
+        );
+    }
+
+    #[test]
     fn resume_argv_unknown_or_unconfirmed_agent_is_none() {
         assert_eq!(resume_argv("gemini", "sess"), None);
+        assert_eq!(resume_argv("agy", "sess"), None);
         assert_eq!(resume_argv("bash", "sess"), None);
     }
 

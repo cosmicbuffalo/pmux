@@ -234,8 +234,8 @@ records may name no pane. pmux routes such a record by agent and directory
 only when exactly one pmux process matches, and ignores it otherwise rather
 than light up the wrong window.
 
-pmux recognizes `codex`, `claude`, `gemini`, `opencode`, `muse`, and `pi` as
-agents. Another AI CLI still gets attention indicators if its ai-attn hooks
+pmux recognizes `claude`, `codex`, `copilot`, `cortex`, `gemini`, `agy`,
+`grok`, `opencode`, `muse`, `pi`, and `omp` as agents. Another AI CLI still gets attention indicators if its ai-attn hooks
 are set up, but not the agent-only features such as the `?` marker in
 `pmux ls`. Issues and pull requests adding agents are welcome.
 

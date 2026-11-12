@@ -12,6 +12,12 @@
   CLIs on your `PATH`, and adds the integration to your tmux config. It is
   safe to rerun; `--yes`, `--dry-run`, and `--skip` control it. ai-attn and
   Dredge are no longer optional add-ons to install yourself.
+- pmux recognizes GitHub Copilot CLI (`copilot`), Grok Build (`grok`),
+  Antigravity CLI (`agy`) and Oh My Pi (`omp`) as agents: `pmux setup` offers
+  to wrap them, the sidebar tags them, and `restore`, `respawn` and `resume`
+  resume Copilot, Grok and Oh My Pi conversations.
+- `pmux setup` installs ai-attn v0.6.0, which adds hooks for those agents
+  and for Gemini CLI and Pi.
 - The installer's `PMUX_SKIP_SETUP=1` replaces `PMUX_SKIP_INIT=1` (still
   accepted), and `PMUX_SETUP_ARGS` passes options to `pmux setup`.
 

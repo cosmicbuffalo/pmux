@@ -531,7 +531,10 @@ pub fn agent_kind_color(kind: &str) -> Color {
         Some(Agent::Codex) => Color::Rgb(62, 166, 130),
         Some(Agent::Gemini) => Color::Rgb(96, 124, 230),
         Some(Agent::Cortex) => Color::Rgb(41, 181, 232),
-        Some(Agent::Muse | Agent::OpenCode | Agent::Pi) | None => Color::Magenta,
+        Some(Agent::Copilot) => Color::Rgb(137, 110, 220),
+        Some(Agent::Grok) => Color::Rgb(190, 190, 190),
+        Some(Agent::Agy) => Color::Rgb(66, 133, 244),
+        Some(Agent::Muse | Agent::OpenCode | Agent::Pi | Agent::Omp) | None => Color::Magenta,
     }
 }
 

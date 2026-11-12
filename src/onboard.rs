@@ -56,9 +56,9 @@ struct Companion {
 
 const AI_ATTN: Companion = Companion {
     name: "ai-attn",
-    tag: "v0.5.0",
-    version: (0, 5, 0),
-    installer_sha256: "8331fe4eccba549f95fda33fb41a317c3a327266939a85ff172177ba7ee49709",
+    tag: "v0.6.0",
+    version: (0, 6, 0),
+    installer_sha256: "086cebfa58c29763548020084a136b4ff3b2cb8c3ce75269c5a492257377a645",
     interpreter: "bash",
     version_env: "AI_ATTN_VERSION",
     version_args: &["version"],
@@ -771,11 +771,11 @@ mod tests {
 
     #[test]
     fn plans_install_upgrade_and_keep() {
-        let pinned = ((0, 5, 0), "v0.5.0");
+        let pinned = ((0, 6, 0), "v0.6.0");
         let path = PathBuf::from("/x/ai-attn");
         assert_eq!(plan(None, pinned, false), Plan::Install);
         assert_eq!(
-            plan(Some((path.clone(), Some((0, 6, 0)))), pinned, true),
+            plan(Some((path.clone(), Some((0, 7, 0)))), pinned, true),
             Plan::Keep {
                 path: path.clone(),
                 note: None
